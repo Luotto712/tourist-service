@@ -8,7 +8,7 @@
 
 1. **启动数据库**（已建库 `tourist_service`，20 张表 + 种子）：
    ```bash
-   mysql -u root -p123456 < E:\code\tourist-service\backend\sql\init.sql
+   mysql -u root -p123456 < E:\code\tourist-service\sql\init.sql
    ```
 2. **启动后端**（必须 JDK 17）：
    ```bash

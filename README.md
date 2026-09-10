@@ -15,7 +15,7 @@
 
 ## 运行与配置
 
-- **后端**：`cd backend && export JAVA_HOME=D:/ETjdk17 && mvn spring-boot:run`（JDK 17，端口 8080，数据库 `tourist_service`，先 `mysql -u root -p123456 < backend/sql/init.sql`）。
+- **后端**：`cd backend && export JAVA_HOME=D:/ETjdk17 && mvn spring-boot:run`（JDK 17，端口 8080，数据库 `tourist_service`，先 `mysql -u root -p123456 < sql/init.sql`）。
 - **前端**：`cd frontend && npm install && npm run dev`（端口 5173，代理 `/api` 与 `/uploads` → 8080）。
 - **测试**：`cd backend && mvn test`（核心状态机 24 个 JUnit5 + Mockito 单测：投诉/应急/审批引擎/Amap 降级）。
 - **账号**（密码均 `123456`）：`platform1`(平台管理员)、`approver1`(审批人员)、`handler1`/`handler2`(投诉处理)、`hotel1`(酒店管理员)、`tourist1`(游客)。
