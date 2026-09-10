@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tourist.mapper.FileAttachmentMapper">
+
+    <resultMap id="BaseResultMap" type="com.tourist.entity.FileAttachment">
+        <id column="id" property="id"/>
+        <result column="related_type" property="relatedType"/>
+        <result column="related_id" property="relatedId"/>
+        <result column="file_name" property="fileName"/>
+        <result column="file_path" property="filePath"/>
+        <result column="file_size" property="fileSize"/>
+        <result column="file_ext" property="fileExt"/>
+        <result column="uploader_id" property="uploaderId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="uploader_name" property="uploaderName"/>
+    </resultMap>
+
+    <select id="selectByRelated" resultMap="BaseResultMap">
+        SELECT fa.*, u.real_name AS uploader_name
+        FROM file_attachment fa
+        LEFT JOIN sys_user u ON fa.uploader_id = u.id
+        WHERE fa.related_type = #{relatedType}
+          AND fa.related_id = #{relatedId}
+        ORDER BY fa.create_time DESC
+    </select>
+
+    <delete id="deleteByRelated">
+        DELETE FROM file_attachment
+        WHERE related_type = #{relatedType}
+          AND related_id = #{relatedId}
+    </delete>
+
+</mapper>

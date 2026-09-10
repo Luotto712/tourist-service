@@ -1,0 +1,17 @@
+package com.tourist.enums;
+
+/**
+ * 消息通知类型（写入 notification.type）。
+ */
+public enum NotificationType {
+    COMPLAINT_SUBMITTED,
+    COMPLAINT_APPROVED,
+    COMPLAINT_REJECTED,
+    COMPLAINT_ASSIGNED,
+    COMPLAINT_RESOLVED,
+    COMPLAINT_CLOSED,
+    EMERGENCY_SUBMITTED,
+    EMERGENCY_PUBLISHED,
+    EMERGENCY_REJECTED,
+    HOTEL_MARKETING
+}

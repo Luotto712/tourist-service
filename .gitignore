@@ -1,0 +1,24 @@
+# 构建产物
+target/
+dist/
+build/
+*.class
+
+# 依赖
+node_modules/
+*.log
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# 运行时上传
+uploads/
+
+# 系统
+.DS_Store
+Thumbs.db
+
+# Office 临时文件
+~$*

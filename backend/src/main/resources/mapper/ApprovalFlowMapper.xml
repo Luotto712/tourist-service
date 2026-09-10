@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tourist.mapper.ApprovalFlowMapper">
+
+    <resultMap id="BaseResultMap" type="com.tourist.entity.ApprovalFlow">
+        <id column="id" property="id"/>
+        <result column="subject_type" property="subjectType"/>
+        <result column="subject_id" property="subjectId"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <select id="selectBySubject" resultMap="BaseResultMap">
+        SELECT * FROM approval_flow
+        WHERE subject_type = #{subjectType} AND subject_id = #{subjectId}
+    </select>
+
+    <delete id="deleteBySubject">
+        DELETE FROM approval_flow WHERE subject_type = #{subjectType} AND subject_id = #{subjectId}
+    </delete>
+
+</mapper>

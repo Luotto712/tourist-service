@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tourist.mapper.ApprovalRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.tourist.entity.ApprovalRecord">
+        <id column="id" property="id"/>
+        <result column="subject_type" property="subjectType"/>
+        <result column="subject_id" property="subjectId"/>
+        <result column="node_id" property="nodeId"/>
+        <result column="approver_id" property="approverId"/>
+        <result column="action" property="action"/>
+        <result column="comment" property="comment"/>
+        <result column="create_time" property="createTime"/>
+        <result column="node_name" property="nodeName"/>
+        <result column="approver_name" property="approverName"/>
+        <result column="approver_role" property="approverRole"/>
+    </resultMap>
+
+    <select id="selectBySubject" resultMap="BaseResultMap">
+        SELECT ar.*,
+               an.node_name,
+               u.real_name AS approver_name,
+               u.role AS approver_role
+        FROM approval_record ar
+        LEFT JOIN approval_node an ON ar.node_id = an.id
+        LEFT JOIN sys_user u ON ar.approver_id = u.id
+        WHERE ar.subject_type = #{subjectType} AND ar.subject_id = #{subjectId}
+        ORDER BY ar.create_time ASC
+    </select>
+
+    <select id="listApprovalRecords" resultMap="BaseResultMap">
+        SELECT ar.*,
+               an.node_name,
+               u.real_name AS approver_name,
+               u.role AS approver_role
+        FROM approval_record ar
+        LEFT JOIN approval_node an ON ar.node_id = an.id
+        LEFT JOIN sys_user u ON ar.approver_id = u.id
+        WHERE 1 = 1
+        <if test="subjectType != null and subjectType != ''">
+            AND ar.subject_type = #{subjectType}
+        </if>
+        <if test="subjectId != null">
+            AND ar.subject_id = #{subjectId}
+        </if>
+        <if test="action != null and action != ''">
+            AND ar.action = #{action}
+        </if>
+        ORDER BY ar.create_time DESC
+    </select>
+
+    <delete id="deleteBySubject">
+        DELETE FROM approval_record WHERE subject_type = #{subjectType} AND subject_id = #{subjectId}
+    </delete>
+
+</mapper>
