@@ -36,7 +36,7 @@ jwt:
 
 # 高德地图 Web 服务（天气/路况，Phase-2 使用；无 key 时走 mock 降级）
 amap:
-  key: ${AMAP_KEY:b6609255444e28705f59c21ce3d9010e}
+  key: ${AMAP_KEY:}
   timeout-ms: 5000
   cache-minutes: 10
 

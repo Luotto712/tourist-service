@@ -22,3 +22,6 @@ Thumbs.db
 
 # Office 临时文件
 ~$*
+
+# ---- 不上传 ----
+.claude/
