@@ -1,17 +1,7 @@
 const TOKEN_KEY = 'tourist_token'
 const USER_KEY = 'tourist_user'
 
-export interface User {
-  userId: string
-  username: string
-  realName: string
-  role: string
-  college: string
-
-  // 兼容旧数据（? = 可能没有）
-  id?: string
-  name?: string
-}
+import type { User } from "@/types/auth"
 
 
 export function getToken() {
