@@ -1,7 +1,5 @@
 // src/types/auth.ts
 
-import { st } from "vue-router/dist/router-CWoNjPRp.mjs"
-
 /** 存在 sessionStorage 里的用户信息 */
 export interface User {
   userId: string
@@ -9,8 +7,6 @@ export interface User {
   realName: string
   role: string
   college: string
-  id?: string
-  name?: string
 }
 /** 注册请求（对照 RegisterRequest.java） */
 export interface RegisterParams {

@@ -15,9 +15,9 @@ export const useUserStore = defineStore('user', () => {
   function initFromStorage() {
     const user = getUser()
     if (user) {
-      userId.value = user.userId || user.id || ''
+      userId.value = user.userId || ''
       username.value = user.username || ''
-      realName.value = user.realName || user.name || ''
+      realName.value = user.realName || ''
       role.value = user.role || ''
       college.value = user.college || ''
     }
@@ -37,11 +37,11 @@ export const useUserStore = defineStore('user', () => {
 
   const isHotelAdmin = computed(() => role.value === ROLE.HOTEL_ADMIN)
 
-  function hasRole(checkRole) {
+  function hasRole(checkRole: string) {
     return role.value === checkRole
   }
 
-  async function login(usernameVal, passwordVal) {
+  async function login(usernameVal: string, passwordVal: string) {
     const res = await loginApi({ username: usernameVal, password: passwordVal })
     const data = res.data || res
 
@@ -54,19 +54,11 @@ export const useUserStore = defineStore('user', () => {
     }
 
     token.value = data.token
-    const userInfo = data.user || {
-      userId: data.userId,
-      id: data.id,
-      username: data.username,
-      realName: data.realName || data.name,
-      role: data.role,
-      college: data.college
-    }
-    userId.value = userInfo.userId || userInfo.id || ''
-    username.value = userInfo.username || usernameVal
-    realName.value = userInfo.realName || userInfo.name || ''
-    role.value = userInfo.role || ''
-    college.value = userInfo.college || ''
+    userId.value = String(data.userId)
+    username.value = data.username || usernameVal
+    realName.value = data.realName || ''
+    role.value = data.role || ''
+    college.value = data.college || ''
 
     setToken(token.value)
     setUser({
@@ -94,9 +86,9 @@ export const useUserStore = defineStore('user', () => {
       const res = await getCurrentUser()
       const data = res.data || res
       if (data) {
-        userId.value = data.userId || data.id || ''
+        userId.value = String(data.id)
         username.value = data.username || ''
-        realName.value = data.realName || data.name || ''
+        realName.value = data.realName || ''
         role.value = data.role || ''
         college.value = data.college || ''
         setUser({
