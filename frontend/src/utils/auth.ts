@@ -2,7 +2,7 @@ const TOKEN_KEY = 'tourist_token'
 const USER_KEY = 'tourist_user'
 
 import type { User } from "@/types/auth"
-
+import type { Role } from '@/constants/roles'
 
 export function getToken() {
   return sessionStorage.getItem(TOKEN_KEY)
@@ -34,7 +34,7 @@ export function removeUser() {
   sessionStorage.removeItem(USER_KEY)
 }
 
-export function getRole() {
+export function getRole(): Role | null {
   const user = getUser()
-  return user ? user.role : null
+  return (user?.role as Role) ?? null
 }

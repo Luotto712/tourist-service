@@ -6,8 +6,12 @@ export const ROLE = {
   APPROVER: 'APPROVER',
   COMPLAINT_HANDLER: 'COMPLAINT_HANDLER',
   HOTEL_ADMIN: 'HOTEL_ADMIN'
-}
-
+} as const
+// ✏️ 导出 Role 类型，取 ROLE 所有【值】的联合
+//    提示：typeof ROLE 拿到对象类型
+//          keyof typeof ROLE 拿到键的联合（'TOURIST' | 'PLATFORM_ADMIN' | ...）
+//          因为键名和值一样，所以直接用 keyof typeof ROLE 就行
+export type Role = keyof typeof ROLE
 // 角色 -> 中文名
 export const roleLabel = {
   TOURIST: '游客',

@@ -266,8 +266,8 @@ router.beforeEach((to, from, next) => {
 
   if (to.meta.roles) {
     const userRole = getRole()
-    if (!to.meta.roles.includes(userRole)) {
-      next({ path: '/activities' })
+    if (!userRole || !to.meta.roles.includes(userRole)) {
+      next({ name: 'Home' })
       return
     }
   }

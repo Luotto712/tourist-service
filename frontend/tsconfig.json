@@ -13,6 +13,7 @@
     "checkJs": false,
     "noEmit": true,
     "esModuleInterop": true,
+    "isolatedModules": true,
     "skipLibCheck": true,
     "paths": {
       "@/*": [
