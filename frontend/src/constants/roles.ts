@@ -32,3 +32,12 @@ export const roleType = {
 
 // 下拉/筛选选项
 export const roleOptions = Object.entries(roleLabel).map(([value, label]) => ({ value, label }))
+
+/**
+ * 判断一个字符串是不是合法的角色
+ * ✏️ 提示：用 in 运算符判断它是不是 ROLE 的键
+ */
+export function isRole(value: string): value is Role {
+  //                                  ↑ 这个写法叫【类型谓词】
+  return value in ROLE
+}
