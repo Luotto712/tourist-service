@@ -13,8 +13,8 @@
       <template #title>首页</template>
     </el-menu-item>
 
-    <template v-for="item in roleMenus" :key="item.index">
-      <el-sub-menu v-if="item.children" :index="'sub-' + item.title">
+    <template v-for="item in roleMenus" :key="item.title">
+      <el-sub-menu v-if="'children' in item" :index="'sub-' + item.title">
         <template #title>
           <el-icon><component :is="item.icon" /></el-icon>
           <span>{{ item.title }}</span>
@@ -37,19 +37,39 @@
   </el-menu>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useAppStore } from '@/stores/app'
-import { ROLE } from '@/constants/roles'
+import { ROLE,isRole } from '@/constants/roles'
+import type { Role } from '@/constants/roles'
 
 const route = useRoute()
 const userStore = useUserStore()
 const appStore = useAppStore()
 
+/** 叶子菜单项：能点击跳转的 */
+interface MenuLeaf {
+  index: string          // 必填（el-menu-item 要求）
+  title: string
+  icon: string
+}
+
+/** 分组菜单项：只展开，不跳转 */
+interface MenuGroup {
+  title: string
+  icon: string
+  children: MenuLeaf[]   // ⚠️ 注意这里是 MenuLeaf，不是 MenuItem
+}
+
+type MenuItem = MenuLeaf | MenuGroup
+
+/** 角色 → 菜单列表 */
+type MenuMap = Record<Role, MenuItem[]>
+
 // 每个角色一组菜单（icon 为全局注册的 Element Plus 图标；children 渲染为子菜单）
-const menuByRole = {
+const menuByRole: MenuMap = {
   [ROLE.TOURIST]: [
     { index: '/complaints', title: '我的投诉', icon: 'Document' },
     { index: '/emergency-info/list', title: '应急信息', icon: 'Warning' },
@@ -108,7 +128,12 @@ const menuByRole = {
   ]
 }
 
-const roleMenus = computed(() => menuByRole[userStore.role] || [])
+const roleMenus = computed(() => {
+  const r = userStore.role
+  return isRole(r) ? menuByRole[r] : []
+  //     ↑ 这里收窄了，所以 menuByRole[r] 合法   ↑ 不是合法角色 → 空菜单
+})
+
 
 const activeMenu = computed(() => route.meta.activeMenu || route.path)
 </script>
