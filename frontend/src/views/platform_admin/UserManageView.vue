@@ -25,15 +25,15 @@
         <el-table-column prop="username" label="用户名" width="120" />
         <el-table-column prop="realName" label="姓名" width="100" />
         <el-table-column label="角色" width="120" align="center">
-          <template #default="{ row }">
+          <template #default="{ row }: { row: UserProfileResponse }">
             <el-tag size="small" :type="roleType[row.role] || 'info'">{{ roleLabel[row.role] || row.role }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="phone" label="手机号" width="130" />
         <el-table-column prop="email" label="邮箱" min-width="180" />
         <el-table-column label="状态" width="90" align="center">
-          <template #default="{ row }">
-            <el-switch :model-value="row.status === 1" @change="(val) => handleToggleStatus(row, val)" />
+          <template #default="{ row }: { row: UserProfileResponse }">
+            <el-switch :model-value="row.status === 1" @change="(val: boolean | string | number) => handleToggleStatus(row, val)" />
           </template>
         </el-table-column>
       </el-table>
@@ -53,15 +53,16 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { searchUsers } from '@/api/user'
 import { ElMessage } from 'element-plus'
 import request from '@/utils/request'
 import { roleLabel, roleType, roleOptions } from '@/constants/roles'
+import type { UserProfileResponse } from '@/types/auth'
 
 const loading = ref(false)
-const users = ref([])
+const users = ref<UserProfileResponse[]>([])
 const total = ref(0)
 
 const searchForm = reactive({ keyword: '', role: '', college: '' })
@@ -77,8 +78,8 @@ async function fetchUsers() {
       pageSize: pagination.size
     })
     const data = res.data || res
-    users.value = data.records || data.content || data.list || data || []
-    total.value = data.total || data.totalElements || users.value.length
+    users.value = data.list
+    total.value = data.total
   } catch {
     users.value = []
     total.value = 0
@@ -87,7 +88,7 @@ async function fetchUsers() {
   }
 }
 
-async function handleToggleStatus(row, val) {
+async function handleToggleStatus(row: UserProfileResponse, val: boolean | string | number) {
   try {
     await request.put(`/users/${row.id}/status`, { status: val ? 1 : 0 })
     ElMessage.success(val ? '已启用' : '已禁用')
