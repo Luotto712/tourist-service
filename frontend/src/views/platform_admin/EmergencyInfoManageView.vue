@@ -39,13 +39,21 @@
     />
 
     <el-dialog v-model="dialogVisible" :title="editing ? '编辑应急信息' : '新增应急信息'" width="560px" :close-on-click-modal="false">
-      <el-form :model="form" label-width="90px">
-        <el-form-item label="标题"><el-input v-model="form.title" /></el-form-item>
-        <el-form-item label="内容"><el-input v-model="form.content" type="textarea" :rows="5" /></el-form-item>
-        <el-form-item label="生效日期">
-          <el-date-picker v-model="form.validFrom" type="date" value-format="YYYY-MM-DD" placeholder="开始" style="width: 45%" />
-          <span style="margin: 0 8px">~</span>
-          <el-date-picker v-model="form.validTo" type="date" value-format="YYYY-MM-DD" placeholder="结束" style="width: 45%" />
+      <el-form ref="formRef" :model="form" :rules="rules" label-width="90px">
+        <el-form-item label="标题" prop="title">
+          <el-input v-model="form.title" />
+        </el-form-item>
+        <el-form-item label="内容" prop="content">
+          <el-input v-model="form.content" type="textarea" :rows="5" />
+        </el-form-item>
+        <el-form-item label="生效日期" prop="validFrom">
+          <el-date-picker v-model="form.validFrom" type="date" value-format="YYYY-MM-DD"
+                    placeholder="开始" style="width: 100%" />
+        </el-form-item>
+
+        <el-form-item label="失效日期" prop="validTo">
+          <el-date-picker v-model="form.validTo" type="date" value-format="YYYY-MM-DD"
+                    placeholder="结束" style="width: 100%" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -57,10 +65,31 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, onMounted } from 'vue'
+import { reactive, ref, onMounted, nextTick } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import type { FormInstance, FormRules } from 'element-plus'
 import { getEmergencyAdmin, publishEmergency, updateEmergency, deleteEmergency } from '@/api/emergency'
-import type { EmergencyInfo,EmergencyStatus } from '@/types/emergency'
+import type { EmergencyInfo,EmergencyStatus,EmergencyForm } from '@/types/emergency'
+
+const formRef = ref<FormInstance>()
+
+const rules: FormRules<EmergencyForm> = {
+  //                ↑★ 泛型，见下面
+  title: [
+    { required: true, message: '请填写标题', trigger: 'blur' },
+    { min: 2, max: 50, message: '标题长度为 2~50 个字', trigger: 'blur' }
+  ],
+  content: [
+    { required: true, message: '请填写内容', trigger: 'blur' },
+    { min: 5, message: '内容至少 5 个字', trigger: 'blur' }
+  ],
+  validFrom: [
+    { required: true, message: '请选择生效日期', trigger: 'change' }
+  ],
+  validTo: [
+    { required: true, message: '请选择失效日期', trigger: 'change' }
+  ]
+}
 
 const list = ref<EmergencyInfo[]>([])
 const loading = ref(false)
@@ -100,10 +129,21 @@ function openDialog(row?: EmergencyInfo) {
   form.validFrom = row?.validFrom || ''
   form.validTo = row?.validTo || ''
   dialogVisible.value = true
+
+  // 清掉上一次打开时残留的校验红字
+  nextTick(() => formRef.value?.clearValidate())
 }
 
 async function handleSubmit() {
-  if (!form.title.trim()) { ElMessage.warning('请填写标题'); return }
+  if (!formRef.value) return
+
+  // 校验不通过会抛异常 —— 接住它，直接返回
+  // （红字由 el-form 自己显示在字段下方，不用我们弹 ElMessage）
+  try {
+    await formRef.value.validate()
+  } catch {
+    return
+  }
   submitting.value = true
   try {
     const payload = { title: form.title, content: form.content, validFrom: form.validFrom, validTo: form.validTo }
