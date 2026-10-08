@@ -1,5 +1,7 @@
 // src/types/auth.ts
 
+import { Role } from "@/constants/roles"
+
 /** 存在 sessionStorage 里的用户信息 */
 export interface User {
   userId: string
@@ -42,8 +44,11 @@ export interface UserProfileResponse {
   id: number
   username: string
   realName: string
-  role: string
+  role: Role
   college: string
+  phone: string
+  email: string
+  status: number
 }
 /** 修改密码请求（对照 ChangePasswordRequest.java） */
 export interface ChangePasswordParams {

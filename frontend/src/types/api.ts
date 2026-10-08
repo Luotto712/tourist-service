@@ -5,11 +5,13 @@
  * 对照后端：com.tourist.common.Result
  */
 export interface ApiResult<T = unknown> {
-  // ✏️ 三个字段，照着上面 Java 那三个写
-  //    code    —— 数字
-  //    message —— 字符串
-  //    data    —— 泛型 T
   code: number
   message: string
   data: T
+}
+export interface PageResult<T> {
+  // ✏️ 两个字段，照着上面的 Java 写
+  //    total 是 long → TS 里是 ______
+  total: number
+  list: T[]
 }
