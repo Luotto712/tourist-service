@@ -56,24 +56,28 @@
   </el-card>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { reactive, ref, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { getEmergencyAdmin, publishEmergency, updateEmergency, deleteEmergency } from '@/api/emergency'
+import type { EmergencyInfo,EmergencyStatus } from '@/types/emergency'
 
-const list = ref([])
+const list = ref<EmergencyInfo[]>([])
 const loading = ref(false)
 const pagination = reactive({ page: 1, size: 10, total: 0 })
 
 const dialogVisible = ref(false)
 const submitting = ref(false)
-const editing = ref(null)
+const editing = ref<EmergencyInfo | null>(null)
 const form = reactive({ title: '', content: '', validFrom: '', validTo: '' })
 
-const statusLabelMap = { PENDING: '待审批', APPROVED: '已发布', REJECTED: '已驳回' }
-const statusTypeMap = { PENDING: 'warning', APPROVED: 'success', REJECTED: 'danger' }
-function statusLabel(s) { return statusLabelMap[s] || s }
-function statusType(s) { return statusTypeMap[s] || 'info' }
+const statusLabelMap: Record<EmergencyStatus, string> = { PENDING: '待审批', APPROVED: '已发布', REJECTED: '已驳回' }
+const statusTypeMap: Record<EmergencyStatus, string> = { PENDING: 'warning', APPROVED: 'success', REJECTED: 'danger' }
+function statusLabel(s: EmergencyStatus) { 
+  // 防御：后端若新增了第 4 种状态，这里兜底显示原值，而不是空白
+  return statusLabelMap[s] || s 
+}
+function statusType(s: EmergencyStatus) { return statusTypeMap[s] || 'info' }
 
 onMounted(fetchList)
 
@@ -89,7 +93,7 @@ async function fetchList() {
   }
 }
 
-function openDialog(row) {
+function openDialog(row?: EmergencyInfo) {
   editing.value = row || null
   form.title = row?.title || ''
   form.content = row?.content || ''
@@ -113,7 +117,7 @@ async function handleSubmit() {
   }
 }
 
-async function handleDelete(row) {
+async function handleDelete(row: EmergencyInfo) {
   await ElMessageBox.confirm('确定删除该应急信息吗？', '提示', { type: 'warning' })
   await deleteEmergency(row.id)
   ElMessage.success('删除成功')
