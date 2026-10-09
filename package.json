@@ -1,0 +1,11 @@
+{
+  "name": "tourist-service",
+  "private": true,
+  "description": "武侯祠游客服务中心 —— 仓库级工具链（前端工具装在 frontend/）",
+  "scripts": {
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}
