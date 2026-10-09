@@ -36,7 +36,7 @@ export default tseslint.config(
     rules: {
       'vue/multi-word-component-names': 'off',        // Navbar / Sidebar 这类布局组件不是 HTML 标签名，误报，关闭
       '@typescript-eslint/no-explicit-any': 'off',        // 渐进迁移中，允许 any
-      '@typescript-eslint/no-unused-vars': ['warn', {      // 没用到的变量：警告
+      '@typescript-eslint/no-unused-vars': ['error', {      // 没用到的变量：错误（需要保留时加 _ 前缀)
         argsIgnorePattern: '^_',
         varsIgnorePattern: '^_'
       }]
