@@ -8,9 +8,20 @@
     </template>
 
     <template v-if="detail">
-      <el-alert v-if="detail.status === 'REJECTED'" title="投诉未通过审批" type="error" :closable="false" style="margin-bottom: 16px" />
+      <el-alert
+        v-if="detail.status === 'REJECTED'"
+        title="投诉未通过审批"
+        type="error"
+        :closable="false"
+        style="margin-bottom: 16px"
+      />
 
-      <el-steps :active="stepIndex" finish-status="success" align-center style="margin-bottom: 24px">
+      <el-steps
+        :active="stepIndex"
+        finish-status="success"
+        align-center
+        style="margin-bottom: 24px"
+      >
         <el-step v-for="s in steps" :key="s" :title="s" />
       </el-steps>
 
@@ -19,18 +30,38 @@
         <el-descriptions-item label="投诉内容">
           {{ detail.content }}
           <div v-if="thumbnails.length" class="thumb-grid">
-            <div v-for="f in thumbnails" :key="f.id" class="thumb-item" @click="download(f)" title="点击下载">
+            <div
+              v-for="f in thumbnails"
+              :key="f.id"
+              class="thumb-item"
+              @click="download(f)"
+              title="点击下载"
+            >
               <img v-if="isImage(f.fileExt)" :src="previewUrl(f.id)" class="thumb-img" alt="附件" />
-              <video v-else-if="isVideo(f.fileExt)" :src="previewUrl(f.id)" class="thumb-video" controls @click.stop />
-              <div v-else class="thumb-file"><el-icon><Document /></el-icon><span class="thumb-name">{{ f.fileName }}</span></div>
+              <video
+                v-else-if="isVideo(f.fileExt)"
+                :src="previewUrl(f.id)"
+                class="thumb-video"
+                controls
+                @click.stop
+              />
+              <div v-else class="thumb-file">
+                <el-icon><Document /></el-icon><span class="thumb-name">{{ f.fileName }}</span>
+              </div>
             </div>
           </div>
         </el-descriptions-item>
         <el-descriptions-item label="状态">
-          <el-tag :type="statusType(detail.status)">{{ statusText[detail.status] || detail.status }}</el-tag>
+          <el-tag :type="statusType(detail.status)">{{
+            statusText[detail.status] || detail.status
+          }}</el-tag>
         </el-descriptions-item>
-        <el-descriptions-item label="处理人员">{{ detail.handlerName || '待分派' }}</el-descriptions-item>
-        <el-descriptions-item v-if="detail.result" label="处理结果">{{ detail.result }}</el-descriptions-item>
+        <el-descriptions-item label="处理人员">{{
+          detail.handlerName || '待分派'
+        }}</el-descriptions-item>
+        <el-descriptions-item v-if="detail.result" label="处理结果">{{
+          detail.result
+        }}</el-descriptions-item>
         <el-descriptions-item label="评分">
           <el-rate :model-value="detail.rating" disabled v-if="detail.rating" />
           <span v-else>未评分</span>
@@ -40,15 +71,39 @@
       <div class="section">
         <h4>回复记录</h4>
         <el-timeline>
-          <el-timeline-item v-for="(rec, i) in mergedRecords" :key="i" :timestamp="formatTime(rec.time)" placement="top">
+          <el-timeline-item
+            v-for="(rec, i) in mergedRecords"
+            :key="i"
+            :timestamp="formatTime(rec.time)"
+            placement="top"
+          >
             <el-tag :type="rec.tag" size="small">{{ rec.role }}</el-tag>
             <span class="rec-name">{{ rec.name }}</span>
             <p class="rec-text">{{ rec.text }}</p>
             <div v-if="rec.files && rec.files.length" class="thumb-grid">
-              <div v-for="f in rec.files" :key="f.id" class="thumb-item" @click="download(f)" title="点击下载">
-                <img v-if="isImage(f.fileExt)" :src="previewUrl(f.id)" class="thumb-img" alt="附件" />
-                <video v-else-if="isVideo(f.fileExt)" :src="previewUrl(f.id)" class="thumb-video" controls @click.stop />
-                <div v-else class="thumb-file"><el-icon><Document /></el-icon><span class="thumb-name">{{ f.fileName }}</span></div>
+              <div
+                v-for="f in rec.files"
+                :key="f.id"
+                class="thumb-item"
+                @click="download(f)"
+                title="点击下载"
+              >
+                <img
+                  v-if="isImage(f.fileExt)"
+                  :src="previewUrl(f.id)"
+                  class="thumb-img"
+                  alt="附件"
+                />
+                <video
+                  v-else-if="isVideo(f.fileExt)"
+                  :src="previewUrl(f.id)"
+                  class="thumb-video"
+                  controls
+                  @click.stop
+                />
+                <div v-else class="thumb-file">
+                  <el-icon><Document /></el-icon><span class="thumb-name">{{ f.fileName }}</span>
+                </div>
               </div>
             </div>
           </el-timeline-item>
@@ -57,8 +112,20 @@
       </div>
 
       <div class="actions">
-        <el-button v-if="isOwner && detail.status !== 'CLOSED' && detail.status !== 'PENDING'" type="primary" plain @click="openReply">回复</el-button>
-        <el-button v-if="isOwner && detail.status === 'RESOLVED'" type="primary" :loading="acting" @click="handleConfirm">确认处理意见</el-button>
+        <el-button
+          v-if="isOwner && detail.status !== 'CLOSED' && detail.status !== 'PENDING'"
+          type="primary"
+          plain
+          @click="openReply"
+          >回复</el-button
+        >
+        <el-button
+          v-if="isOwner && detail.status === 'RESOLVED'"
+          type="primary"
+          :loading="acting"
+          @click="handleConfirm"
+          >确认处理意见</el-button
+        >
         <div class="action-row" v-if="isOwner && detail.status === 'CLOSED' && !detail.rating">
           <span>请评价：</span>
           <el-rate v-model="rating" />
@@ -91,10 +158,10 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { Plus, Document, VideoCamera } from '@element-plus/icons-vue'
+import { Plus, Document } from '@element-plus/icons-vue'
 import { getComplaint, replyComplaint, confirmComplaint, rateComplaint } from '@/api/complaint'
 import { uploadFile } from '@/api/file'
 import { useUserStore } from '@/stores/user'
@@ -114,11 +181,26 @@ const replySelected = ref([])
 
 const steps = ['待审批', '已通过', '处理中', '处理完成', '已确认', '已结案']
 const stepMap = { PENDING: 0, APPROVED: 1, PROCESSING: 2, RESOLVED: 3, CONFIRMED: 4, CLOSED: 5 }
-const statusText = { PROCESSING: '处理中', RESOLVED: '处理完成', CONFIRMED: '已确认', CLOSED: '已结案' }
-const statusTypeMap = { REJECTED: 'danger', APPROVED: 'success', RESOLVED: 'success', CONFIRMED: 'success', CLOSED: 'info', PENDING: 'warning', PROCESSING: 'primary' }
+const statusText = {
+  PROCESSING: '处理中',
+  RESOLVED: '处理完成',
+  CONFIRMED: '已确认',
+  CLOSED: '已结案'
+}
+const statusTypeMap = {
+  REJECTED: 'danger',
+  APPROVED: 'success',
+  RESOLVED: 'success',
+  CONFIRMED: 'success',
+  CLOSED: 'info',
+  PENDING: 'warning',
+  PROCESSING: 'primary'
+}
 
 const stepIndex = computed(() => stepMap[detail.value?.status] ?? 0)
-function statusType(s) { return statusTypeMap[s] || 'info' }
+function statusType(s) {
+  return statusTypeMap[s] || 'info'
+}
 const isOwner = computed(() => !!detail.value && detail.value.userId === userStore.userId)
 const thumbnails = computed(() => (detail.value && detail.value.attachments) || [])
 
@@ -130,24 +212,65 @@ const mergedRecords = computed(() => {
   recs.push({ role: '游客', name: d.userName, text: d.content, time: d.createTime, tag: 'primary' })
   ;(d.timeline || []).forEach(r => {
     const ok = r.action === 'APPROVE'
-    const txt = (r.nodeName ? r.nodeName + '：' : '') + (ok ? '审批通过' : '审批驳回') + (r.comment ? '；意见：' + r.comment : '')
-    recs.push({ role: '审批人员', name: r.approverName, text: txt, time: r.createTime, tag: 'success' })
+    const txt =
+      (r.nodeName ? r.nodeName + '：' : '') +
+      (ok ? '审批通过' : '审批驳回') +
+      (r.comment ? '；意见：' + r.comment : '')
+    recs.push({
+      role: '审批人员',
+      name: r.approverName,
+      text: txt,
+      time: r.createTime,
+      tag: 'success'
+    })
   })
   ;(d.replies || []).forEach(r => {
     const owner = r.userId === d.userId
-    const roleText = owner ? '游客' : (r.userId === d.handlerId ? '投诉处理人员' : '其他')
-    recs.push({ role: roleText, name: r.userName, text: r.content, time: r.createTime, tag: owner ? 'primary' : 'warning', files: r.attachments })
+    const roleText = owner ? '游客' : r.userId === d.handlerId ? '投诉处理人员' : '其他'
+    recs.push({
+      role: roleText,
+      name: r.userName,
+      text: r.content,
+      time: r.createTime,
+      tag: owner ? 'primary' : 'warning',
+      files: r.attachments
+    })
   })
-  if (d.confirmTime) recs.push({ role: '游客', name: d.userName, text: '已确认处理意见', time: d.confirmTime, tag: 'primary' })
-  if (d.closeTime) recs.push({ role: '平台管理员', name: '平台管理员', text: '已结案', time: d.closeTime, tag: 'info' })
-  if (d.rating) recs.push({ role: '游客', name: d.userName, text: '评价 ' + d.rating + ' 星', time: d.closeTime, tag: 'primary' })
-  return recs.filter(r => r.text && r.text !== '').slice().sort((a, b) => {
-    const at = a.time || '', bt = b.time || ''
-    if (!at && !bt) return 0
-    if (!at) return 1
-    if (!bt) return -1
-    return String(at).localeCompare(String(bt))
-  })
+  if (d.confirmTime)
+    recs.push({
+      role: '游客',
+      name: d.userName,
+      text: '已确认处理意见',
+      time: d.confirmTime,
+      tag: 'primary'
+    })
+  if (d.closeTime)
+    recs.push({
+      role: '平台管理员',
+      name: '平台管理员',
+      text: '已结案',
+      time: d.closeTime,
+      tag: 'info'
+    })
+  if (d.rating)
+    recs.push({
+      role: '游客',
+      name: d.userName,
+      text: '评价 ' + d.rating + ' 星',
+      time: d.closeTime,
+      tag: 'primary'
+    })
+  return recs
+    .filter(r => r.text && r.text !== '')
+    .slice()
+    .sort((a, b) => {
+      const at = a.time || '',
+        bt = b.time || ''
+      if (!at && !bt) return 0
+      if (!at) return 1
+      if (!bt) return -1
+      return String(at).localeCompare(String(bt))
+    })
 })
 
 onMounted(fetchDetail)
@@ -162,10 +285,18 @@ async function fetchDetail() {
   }
 }
 
-function previewUrl(id) { return `/api/files/${id}/download` }
-function isImage(ext) { return ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes((ext || '').toLowerCase()) }
-function isVideo(ext) { return ['mp4', 'avi', 'mov', 'mkv'].includes((ext || '').toLowerCase()) }
-function download(f) { window.open(previewUrl(f.id), '_blank') }
+function previewUrl(id) {
+  return `/api/files/${id}/download`
+}
+function isImage(ext) {
+  return ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes((ext || '').toLowerCase())
+}
+function isVideo(ext) {
+  return ['mp4', 'avi', 'mov', 'mkv'].includes((ext || '').toLowerCase())
+}
+function download(f) {
+  window.open(previewUrl(f.id), '_blank')
+}
 
 function formatTime(time) {
   if (!time) return ''
@@ -189,7 +320,10 @@ function onReplyFileRemove(file, files) {
 }
 
 async function handleReply() {
-  if (!replyContent.value.trim()) { ElMessage.warning('请输入回复内容'); return }
+  if (!replyContent.value.trim()) {
+    ElMessage.warning('请输入回复内容')
+    return
+  }
   acting.value = true
   try {
     const res = await replyComplaint(complaintId.value, { content: replyContent.value })
@@ -221,7 +355,10 @@ async function handleConfirm() {
 }
 
 async function handleRate() {
-  if (!rating.value) { ElMessage.warning('请选择评分'); return }
+  if (!rating.value) {
+    ElMessage.warning('请选择评分')
+    return
+  }
   acting.value = true
   try {
     await rateComplaint(complaintId.value, { rating: rating.value })
@@ -234,17 +371,75 @@ async function handleRate() {
 </script>
 
 <style lang="scss" scoped>
-.header-bar { display: flex; justify-content: space-between; align-items: center; }
-.section { margin-top: 24px; h4 { margin: 0 0 10px; } }
-.actions { margin-top: 24px; display: flex; flex-direction: column; gap: 16px; }
-.action-row { display: flex; align-items: center; gap: 12px; }
-.rec-name { margin-left: 8px; font-weight: 500; color: #303133; }
-.rec-text { margin: 6px 0 0; color: #606266; line-height: 1.6; white-space: pre-wrap; }
-.thumb-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
-.thumb-item { cursor: pointer; }
-.thumb-img { width: 110px; height: 110px; object-fit: cover; border-radius: 6px; border: 1px solid #ebeef5; }
-.thumb-video { width: 200px; height: 110px; border-radius: 6px; background: #000; object-fit: cover; }
-.thumb-file { display: flex; align-items: center; gap: 6px; padding: 8px 12px; border: 1px solid #ebeef5; border-radius: 6px; }
-.thumb-name { font-size: 12px; color: #409eff; }
-.reply-upload { margin-top: 12px; }
+.header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.section {
+  margin-top: 24px;
+  h4 {
+    margin: 0 0 10px;
+  }
+}
+.actions {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.action-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.rec-name {
+  margin-left: 8px;
+  font-weight: 500;
+  color: #303133;
+}
+.rec-text {
+  margin: 6px 0 0;
+  color: #606266;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+.thumb-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+.thumb-item {
+  cursor: pointer;
+}
+.thumb-img {
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #ebeef5;
+}
+.thumb-video {
+  width: 200px;
+  height: 110px;
+  border-radius: 6px;
+  background: #000;
+  object-fit: cover;
+}
+.thumb-file {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 1px solid #ebeef5;
+  border-radius: 6px;
+}
+.thumb-name {
+  font-size: 12px;
+  color: #409eff;
+}
+.reply-upload {
+  margin-top: 12px;
+}
 </style>

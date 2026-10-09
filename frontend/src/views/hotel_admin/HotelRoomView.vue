@@ -10,12 +10,24 @@
         </el-select>
       </el-form-item>
       <el-form-item label="酒店">
-        <el-select v-model="filter.hotelId" filterable placeholder="选择酒店" style="width: 200px" @change="fetchData">
+        <el-select
+          v-model="filter.hotelId"
+          filterable
+          placeholder="选择酒店"
+          style="width: 200px"
+          @change="fetchData"
+        >
           <el-option v-for="h in hotelOptions" :key="h.id" :label="h.name" :value="h.id" />
         </el-select>
       </el-form-item>
       <el-form-item label="日期">
-        <el-date-picker v-model="filter.date" type="date" value-format="YYYY-MM-DD" :clearable="false" @change="fetchData" />
+        <el-date-picker
+          v-model="filter.date"
+          type="date"
+          value-format="YYYY-MM-DD"
+          :clearable="false"
+          @change="fetchData"
+        />
       </el-form-item>
       <el-form-item><el-button type="primary" @click="fetchData">查询</el-button></el-form-item>
     </el-form>
@@ -45,17 +57,30 @@
     </el-table>
 
     <div style="margin-top: 16px">
-      <el-button type="primary" plain @click="openAdd" :disabled="!filter.hotelId">新增房型</el-button>
+      <el-button type="primary" plain @click="openAdd" :disabled="!filter.hotelId"
+        >新增房型</el-button
+      >
     </div>
 
-    <el-dialog v-model="dialogVisible" :title="editing ? '编辑房型' : '新增房型'" width="480px" :close-on-click-modal="false">
+    <el-dialog
+      v-model="dialogVisible"
+      :title="editing ? '编辑房型' : '新增房型'"
+      width="480px"
+      :close-on-click-modal="false"
+    >
       <el-form :model="form" label-width="90px">
         <el-form-item label="房型">
           <el-input v-model="form.roomType" :disabled="!!editing" />
         </el-form-item>
-        <el-form-item label="总房量"><el-input-number v-model="form.total" :min="0" /></el-form-item>
-        <el-form-item label="已预定"><el-input-number v-model="form.baseBooked" :min="0" :max="form.total" /></el-form-item>
-        <el-form-item label="价格"><el-input-number v-model="form.price" :min="0" :precision="2" /></el-form-item>
+        <el-form-item label="总房量"
+          ><el-input-number v-model="form.total" :min="0"
+        /></el-form-item>
+        <el-form-item label="已预定"
+          ><el-input-number v-model="form.baseBooked" :min="0" :max="form.total"
+        /></el-form-item>
+        <el-form-item label="价格"
+          ><el-input-number v-model="form.price" :min="0" :precision="2"
+        /></el-form-item>
       </el-form>
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
@@ -80,7 +105,11 @@
           <template #default="{ row }">￥{{ row.totalPrice }}</template>
         </el-table-column>
       </el-table>
-      <el-empty v-if="!bookingsLoading && !bookings.length" description="该房型暂无预订" :image-size="60" />
+      <el-empty
+        v-if="!bookingsLoading && !bookings.length"
+        description="该房型暂无预订"
+        :image-size="60"
+      />
     </el-dialog>
   </el-card>
 </template>
@@ -107,7 +136,9 @@ const bookingsLoading = ref(false)
 const bookingsRoomType = ref('')
 const bookings = ref([])
 
-const hotelOptions = computed(() => hotels.value.filter(h => (filter.hotelType === 'STAR' ? h._isStar : !h._isStar)))
+const hotelOptions = computed(() =>
+  hotels.value.filter(h => (filter.hotelType === 'STAR' ? h._isStar : !h._isStar))
+)
 
 onMounted(fetchHotels)
 
@@ -122,13 +153,23 @@ async function fetchHotels() {
   ]
 }
 
-function onTypeChange() { filter.hotelId = null; list.value = [] }
+function onTypeChange() {
+  filter.hotelId = null
+  list.value = []
+}
 
 async function fetchData() {
-  if (!filter.hotelId) { ElMessage.warning('请选择酒店'); return }
+  if (!filter.hotelId) {
+    ElMessage.warning('请选择酒店')
+    return
+  }
   loading.value = true
   try {
-    const res = await listRoomTypes({ hotelType: filter.hotelType, hotelId: filter.hotelId, date: filter.date })
+    const res = await listRoomTypes({
+      hotelType: filter.hotelType,
+      hotelId: filter.hotelId,
+      date: filter.date
+    })
     list.value = res.data || []
   } finally {
     loading.value = false
@@ -154,8 +195,14 @@ function openEdit(row) {
 }
 
 async function handleSubmit() {
-  if (!filter.hotelId) { ElMessage.warning('请选择酒店'); return }
-  if (!form.roomType) { ElMessage.warning('请填写房型'); return }
+  if (!filter.hotelId) {
+    ElMessage.warning('请选择酒店')
+    return
+  }
+  if (!form.roomType) {
+    ElMessage.warning('请填写房型')
+    return
+  }
   submitting.value = true
   try {
     await saveRoomType({
@@ -175,7 +222,11 @@ async function handleSubmit() {
 }
 
 async function handleDelete(row) {
-  await ElMessageBox.confirm(`确定彻底删除房型「${row.roomType}」吗？相关预订也会一并删除。`, '提示', { type: 'warning' })
+  await ElMessageBox.confirm(
+    `确定彻底删除房型「${row.roomType}」吗？相关预订也会一并删除。`,
+    '提示',
+    { type: 'warning' }
+  )
   await deleteRoomType(row.roomTypeId)
   ElMessage.success('已删除')
   fetchData()
@@ -201,5 +252,7 @@ async function showBookings(row) {
 </script>
 
 <style lang="scss" scoped>
-.mb-16 { margin-bottom: 16px; }
+.mb-16 {
+  margin-bottom: 16px;
+}
 </style>

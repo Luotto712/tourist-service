@@ -1,7 +1,7 @@
 const TOKEN_KEY = 'tourist_token'
 const USER_KEY = 'tourist_user'
 
-import type { User } from "@/types/auth"
+import type { User } from '@/types/auth'
 import type { Role } from '@/constants/roles'
 
 export function getToken() {

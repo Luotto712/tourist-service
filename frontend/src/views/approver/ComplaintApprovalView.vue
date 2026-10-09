@@ -3,16 +3,28 @@
     <template #header><span>投诉审批</span></template>
     <el-table :data="list" v-loading="loading" border>
       <el-table-column label="编号" width="80">
-        <template #default="{ $index }">{{ (pagination.page - 1) * pagination.size + $index + 1 }}</template>
+        <template #default="{ $index }">{{
+          (pagination.page - 1) * pagination.size + $index + 1
+        }}</template>
       </el-table-column>
       <el-table-column prop="userName" label="投诉人" width="120" />
       <el-table-column label="投诉" width="90">
-        <template #default="{ row }"><el-button size="small" type="primary" link @click="$router.push(`/complaints/${row.id}`)">详情</el-button></template>
+        <template #default="{ row }"
+          ><el-button
+            size="small"
+            type="primary"
+            link
+            @click="$router.push(`/complaints/${row.id}`)"
+            >详情</el-button
+          ></template
+        >
       </el-table-column>
       <el-table-column prop="createTime" label="提交时间" width="180" />
       <el-table-column label="操作" width="180" fixed="right">
         <template #default="{ row }">
-          <el-button size="small" type="success" @click="openDialog(row, 'approve')">通过</el-button>
+          <el-button size="small" type="success" @click="openDialog(row, 'approve')"
+            >通过</el-button
+          >
           <el-button size="small" type="danger" @click="openDialog(row, 'reject')">驳回</el-button>
         </template>
       </el-table-column>
@@ -28,7 +40,11 @@
       @current-change="fetchList"
     />
 
-    <el-dialog v-model="dialogVisible" :title="dialogAction === 'approve' ? '通过投诉' : '驳回投诉'" width="480px">
+    <el-dialog
+      v-model="dialogVisible"
+      :title="dialogAction === 'approve' ? '通过投诉' : '驳回投诉'"
+      width="480px"
+    >
       <el-input v-model="comment" type="textarea" :rows="3" placeholder="审批意见（可选）" />
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
@@ -36,7 +52,8 @@
           :type="dialogAction === 'approve' ? 'success' : 'danger'"
           :loading="acting"
           @click="handleConfirm"
-        >{{ dialogAction === 'approve' ? '通过' : '驳回' }}</el-button>
+          >{{ dialogAction === 'approve' ? '通过' : '驳回' }}</el-button
+        >
       </template>
     </el-dialog>
   </el-card>

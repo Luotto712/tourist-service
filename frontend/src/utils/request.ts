@@ -25,20 +25,20 @@ const instance = axios.create({
 })
 
 instance.interceptors.request.use(
-  (config) => {
+  config => {
     const token = getToken()
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
     return config
   },
-  (error) => {
+  error => {
     return Promise.reject(error)
   }
 )
 
 instance.interceptors.response.use(
-  (response) => {
+  response => {
     return response.data
   },
   (error: AxiosError<ApiResult>) => {

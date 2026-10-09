@@ -1,7 +1,14 @@
 // 把 api/auth.js 改名成 api/auth.ts
 import request from '@/utils/request'
 import type { ApiResult } from '@/types/api'
-import type { LoginParams, LoginResponse, UserProfileResponse, RegisterParams, ChangePasswordParams, ForgotPasswordParams } from '@/types/auth'
+import type {
+  LoginParams,
+  LoginResponse,
+  UserProfileResponse,
+  RegisterParams,
+  ChangePasswordParams,
+  ForgotPasswordParams
+} from '@/types/auth'
 
 export function register(data: RegisterParams) {
   return request.post<ApiResult<string>>('/auth/register', data)

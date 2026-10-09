@@ -38,7 +38,12 @@
       @current-change="fetchList"
     />
 
-    <el-dialog v-model="dialogVisible" :title="editing ? '编辑应急信息' : '新增应急信息'" width="560px" :close-on-click-modal="false">
+    <el-dialog
+      v-model="dialogVisible"
+      :title="editing ? '编辑应急信息' : '新增应急信息'"
+      width="560px"
+      :close-on-click-modal="false"
+    >
       <el-form ref="formRef" :model="form" :rules="rules" label-width="90px">
         <el-form-item label="标题" prop="title">
           <el-input v-model="form.title" />
@@ -47,13 +52,23 @@
           <el-input v-model="form.content" type="textarea" :rows="5" />
         </el-form-item>
         <el-form-item label="生效日期" prop="validFrom">
-          <el-date-picker v-model="form.validFrom" type="date" value-format="YYYY-MM-DD"
-                    placeholder="开始" style="width: 100%" />
+          <el-date-picker
+            v-model="form.validFrom"
+            type="date"
+            value-format="YYYY-MM-DD"
+            placeholder="开始"
+            style="width: 100%"
+          />
         </el-form-item>
 
         <el-form-item label="失效日期" prop="validTo">
-          <el-date-picker v-model="form.validTo" type="date" value-format="YYYY-MM-DD"
-                    placeholder="结束" style="width: 100%" />
+          <el-date-picker
+            v-model="form.validTo"
+            type="date"
+            value-format="YYYY-MM-DD"
+            placeholder="结束"
+            style="width: 100%"
+          />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -68,8 +83,13 @@
 import { reactive, ref, onMounted, nextTick } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
-import { getEmergencyAdmin, publishEmergency, updateEmergency, deleteEmergency } from '@/api/emergency'
-import type { EmergencyInfo,EmergencyStatus,EmergencyForm } from '@/types/emergency'
+import {
+  getEmergencyAdmin,
+  publishEmergency,
+  updateEmergency,
+  deleteEmergency
+} from '@/api/emergency'
+import type { EmergencyInfo, EmergencyStatus, EmergencyForm } from '@/types/emergency'
 
 const formRef = ref<FormInstance>()
 
@@ -83,12 +103,8 @@ const rules: FormRules<EmergencyForm> = {
     { required: true, message: '请填写内容', trigger: 'blur' },
     { min: 5, message: '内容至少 5 个字', trigger: 'blur' }
   ],
-  validFrom: [
-    { required: true, message: '请选择生效日期', trigger: 'change' }
-  ],
-  validTo: [
-    { required: true, message: '请选择失效日期', trigger: 'change' }
-  ]
+  validFrom: [{ required: true, message: '请选择生效日期', trigger: 'change' }],
+  validTo: [{ required: true, message: '请选择失效日期', trigger: 'change' }]
 }
 
 const list = ref<EmergencyInfo[]>([])
@@ -100,13 +116,23 @@ const submitting = ref(false)
 const editing = ref<EmergencyInfo | null>(null)
 const form = reactive({ title: '', content: '', validFrom: '', validTo: '' })
 
-const statusLabelMap: Record<EmergencyStatus, string> = { PENDING: '待审批', APPROVED: '已发布', REJECTED: '已驳回' }
-const statusTypeMap: Record<EmergencyStatus, string> = { PENDING: 'warning', APPROVED: 'success', REJECTED: 'danger' }
-function statusLabel(s: EmergencyStatus) { 
-  // 防御：后端若新增了第 4 种状态，这里兜底显示原值，而不是空白
-  return statusLabelMap[s] || s 
+const statusLabelMap: Record<EmergencyStatus, string> = {
+  PENDING: '待审批',
+  APPROVED: '已发布',
+  REJECTED: '已驳回'
 }
-function statusType(s: EmergencyStatus) { return statusTypeMap[s] || 'info' }
+const statusTypeMap: Record<EmergencyStatus, string> = {
+  PENDING: 'warning',
+  APPROVED: 'success',
+  REJECTED: 'danger'
+}
+function statusLabel(s: EmergencyStatus) {
+  // 防御：后端若新增了第 4 种状态，这里兜底显示原值，而不是空白
+  return statusLabelMap[s] || s
+}
+function statusType(s: EmergencyStatus) {
+  return statusTypeMap[s] || 'info'
+}
 
 onMounted(fetchList)
 
@@ -146,7 +172,12 @@ async function handleSubmit() {
   }
   submitting.value = true
   try {
-    const payload = { title: form.title, content: form.content, validFrom: form.validFrom, validTo: form.validTo }
+    const payload = {
+      title: form.title,
+      content: form.content,
+      validFrom: form.validFrom,
+      validTo: form.validTo
+    }
     if (editing.value) await updateEmergency(editing.value.id, payload)
     else await publishEmergency(payload)
     ElMessage.success('保存成功')
@@ -166,5 +197,9 @@ async function handleDelete(row: EmergencyInfo) {
 </script>
 
 <style lang="scss" scoped>
-.header-bar { display: flex; justify-content: space-between; align-items: center; }
+.header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 </style>

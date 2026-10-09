@@ -9,7 +9,9 @@
 
     <el-table :data="list" v-loading="loading" border>
       <el-table-column label="编号" width="80">
-        <template #default="{ $index }">{{ (pagination.page - 1) * pagination.size + $index + 1 }}</template>
+        <template #default="{ $index }">{{
+          (pagination.page - 1) * pagination.size + $index + 1
+        }}</template>
       </el-table-column>
       <el-table-column prop="content" label="投诉内容" show-overflow-tooltip min-width="240" />
       <el-table-column label="状态" width="110">
@@ -20,7 +22,9 @@
       <el-table-column prop="createTime" label="提交时间" width="180" />
       <el-table-column label="操作" width="140" fixed="right">
         <template #default="{ row }">
-          <el-button size="small" type="primary" link @click="$router.push(`/complaints/${row.id}`)">查看</el-button>
+          <el-button size="small" type="primary" link @click="$router.push(`/complaints/${row.id}`)"
+            >查看</el-button
+          >
           <el-button size="small" type="danger" link @click="handleDelete(row)">删除</el-button>
         </template>
       </el-table-column>
@@ -41,7 +45,12 @@
     <el-dialog v-model="submitVisible" title="提交投诉" width="560px" :close-on-click-modal="false">
       <el-form :model="submitForm" label-width="80px">
         <el-form-item label="投诉内容">
-          <el-input v-model="submitForm.content" type="textarea" :rows="6" placeholder="请描述您遇到的问题" />
+          <el-input
+            v-model="submitForm.content"
+            type="textarea"
+            :rows="6"
+            placeholder="请描述您遇到的问题"
+          />
         </el-form-item>
         <el-form-item label="图片/视频">
           <el-upload
@@ -155,10 +164,18 @@ const statusText = {
   CONFIRMED: ['已确认', 'success'],
   CLOSED: ['已结案', 'info']
 }
-function statusLabel(s) { return (statusText[s] || [s, 'info'])[0] }
-function statusType(s) { return (statusText[s] || [s, 'info'])[1] }
+function statusLabel(s) {
+  return (statusText[s] || [s, 'info'])[0]
+}
+function statusType(s) {
+  return (statusText[s] || [s, 'info'])[1]
+}
 </script>
 
 <style lang="scss" scoped>
-.header-bar { display: flex; justify-content: space-between; align-items: center; }
+.header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 </style>

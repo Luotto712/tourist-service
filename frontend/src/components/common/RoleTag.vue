@@ -1,11 +1,5 @@
 <template>
-  <el-tag
-    :type="tagType"
-    :size="size"
-    :effect="effect"
-    :round="round"
-    class="role-tag"
-  >
+  <el-tag :type="tagType" :size="size" :effect="effect" :round="round" class="role-tag">
     {{ roleLabelC }}
   </el-tag>
 </template>

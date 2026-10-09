@@ -41,13 +41,7 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button
-            type="primary"
-            :loading="loading"
-            @click="handleSubmit"
-          >
-            确认修改
-          </el-button>
+          <el-button type="primary" :loading="loading" @click="handleSubmit"> 确认修改 </el-button>
           <el-button @click="handleReset">重置</el-button>
         </el-form-item>
       </el-form>
@@ -78,9 +72,7 @@ const validateConfirmPassword = (rule, value, callback) => {
 }
 
 const rules = {
-  oldPassword: [
-    { required: true, message: '请输入旧密码', trigger: 'blur' }
-  ],
+  oldPassword: [{ required: true, message: '请输入旧密码', trigger: 'blur' }],
   newPassword: [
     { required: true, message: '请输入新密码', trigger: 'blur' },
     { min: 6, message: '密码长度不能少于6位', trigger: 'blur' }

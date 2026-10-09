@@ -5,29 +5,41 @@ import { ROLE } from '@/constants/roles'
 const AppLayout = () => import('@/components/layout/AppLayout.vue')
 
 // 查询类目录：游客只读 + 平台管理员维护（走通用 Catalog 组件）
-const CATALOG_RESOURCES = ['attractions', 'routes', 'catering', 'performance-groups', 'transport', 'hotels/star', 'hotels/nonstar']
-const catalogRoutes = CATALOG_RESOURCES.flatMap((resource) => [
+const CATALOG_RESOURCES = [
+  'attractions',
+  'routes',
+  'catering',
+  'performance-groups',
+  'transport',
+  'hotels/star',
+  'hotels/nonstar'
+]
+const catalogRoutes = CATALOG_RESOURCES.flatMap(resource => [
   {
     path: `/catalog/${resource}`,
     component: AppLayout,
     meta: { roles: [ROLE.TOURIST] },
-    children: [{
-      path: '',
-      name: `Catalog-${resource.replace('/', '-')}`,
-      component: () => import('@/views/shared/CatalogListView.vue'),
-      props: { resource }
-    }]
+    children: [
+      {
+        path: '',
+        name: `Catalog-${resource.replace('/', '-')}`,
+        component: () => import('@/views/shared/CatalogListView.vue'),
+        props: { resource }
+      }
+    ]
   },
   {
     path: `/manage/${resource}`,
     component: AppLayout,
     meta: { roles: [ROLE.PLATFORM_ADMIN] },
-    children: [{
-      path: '',
-      name: `Manage-${resource.replace('/', '-')}`,
-      component: () => import('@/views/platform_admin/CatalogManageView.vue'),
-      props: { resource }
-    }]
+    children: [
+      {
+        path: '',
+        name: `Manage-${resource.replace('/', '-')}`,
+        component: () => import('@/views/platform_admin/CatalogManageView.vue'),
+        props: { resource }
+      }
+    ]
   }
 ])
 
@@ -61,9 +73,7 @@ const routes = [
   {
     path: '/',
     component: AppLayout,
-    children: [
-      { path: '', name: 'Home', component: () => import('@/views/shared/HomeView.vue') }
-    ]
+    children: [{ path: '', name: 'Home', component: () => import('@/views/shared/HomeView.vue') }]
   },
 
   // 游客：我的投诉 + 应急信息
@@ -72,7 +82,11 @@ const routes = [
     component: AppLayout,
     meta: { roles: [ROLE.TOURIST] },
     children: [
-      { path: '', name: 'MyComplaints', component: () => import('@/views/shared/MyComplaintsView.vue') }
+      {
+        path: '',
+        name: 'MyComplaints',
+        component: () => import('@/views/shared/MyComplaintsView.vue')
+      }
     ]
   },
   {
@@ -101,7 +115,11 @@ const routes = [
     component: AppLayout,
     meta: { roles: [ROLE.TOURIST] },
     children: [
-      { path: '', name: 'EmergencyInfoList', component: () => import('@/views/shared/EmergencyInfoListView.vue') }
+      {
+        path: '',
+        name: 'EmergencyInfoList',
+        component: () => import('@/views/shared/EmergencyInfoListView.vue')
+      }
     ]
   },
 
@@ -111,7 +129,11 @@ const routes = [
     component: AppLayout,
     meta: { roles: [ROLE.APPROVER] },
     children: [
-      { path: '', name: 'ComplaintApproval', component: () => import('@/views/approver/ComplaintApprovalView.vue') }
+      {
+        path: '',
+        name: 'ComplaintApproval',
+        component: () => import('@/views/approver/ComplaintApprovalView.vue')
+      }
     ]
   },
   {
@@ -119,7 +141,11 @@ const routes = [
     component: AppLayout,
     meta: { roles: [ROLE.APPROVER] },
     children: [
-      { path: '', name: 'EmergencyApproval', component: () => import('@/views/approver/EmergencyApprovalView.vue') }
+      {
+        path: '',
+        name: 'EmergencyApproval',
+        component: () => import('@/views/approver/EmergencyApprovalView.vue')
+      }
     ]
   },
 
@@ -129,7 +155,11 @@ const routes = [
     component: AppLayout,
     meta: { roles: [ROLE.PLATFORM_ADMIN] },
     children: [
-      { path: '', name: 'ComplaintAssign', component: () => import('@/views/platform_admin/ComplaintAssignView.vue') }
+      {
+        path: '',
+        name: 'ComplaintAssign',
+        component: () => import('@/views/platform_admin/ComplaintAssignView.vue')
+      }
     ]
   },
   {
@@ -137,7 +167,11 @@ const routes = [
     component: AppLayout,
     meta: { roles: [ROLE.PLATFORM_ADMIN] },
     children: [
-      { path: '', name: 'ComplaintClose', component: () => import('@/views/platform_admin/ComplaintCloseView.vue') }
+      {
+        path: '',
+        name: 'ComplaintClose',
+        component: () => import('@/views/platform_admin/ComplaintCloseView.vue')
+      }
     ]
   },
   {
@@ -145,7 +179,11 @@ const routes = [
     component: AppLayout,
     meta: { roles: [ROLE.PLATFORM_ADMIN] },
     children: [
-      { path: '', name: 'EmergencyInfoManage', component: () => import('@/views/platform_admin/EmergencyInfoManageView.vue') }
+      {
+        path: '',
+        name: 'EmergencyInfoManage',
+        component: () => import('@/views/platform_admin/EmergencyInfoManageView.vue')
+      }
     ]
   },
   {
@@ -153,7 +191,11 @@ const routes = [
     component: AppLayout,
     meta: { roles: [ROLE.PLATFORM_ADMIN] },
     children: [
-      { path: '', name: 'UserManage', component: () => import('@/views/platform_admin/UserManageView.vue') }
+      {
+        path: '',
+        name: 'UserManage',
+        component: () => import('@/views/platform_admin/UserManageView.vue')
+      }
     ]
   },
 
@@ -163,7 +205,11 @@ const routes = [
     component: AppLayout,
     meta: { roles: [ROLE.COMPLAINT_HANDLER] },
     children: [
-      { path: '', name: 'ComplaintProcess', component: () => import('@/views/handler/ComplaintProcessView.vue') }
+      {
+        path: '',
+        name: 'ComplaintProcess',
+        component: () => import('@/views/handler/ComplaintProcessView.vue')
+      }
     ]
   },
 
@@ -173,7 +219,11 @@ const routes = [
     component: AppLayout,
     meta: { roles: [ROLE.HOTEL_ADMIN] },
     children: [
-      { path: '', name: 'HotelRoomEntry', component: () => import('@/views/hotel_admin/HotelRoomView.vue') }
+      {
+        path: '',
+        name: 'HotelRoomEntry',
+        component: () => import('@/views/hotel_admin/HotelRoomView.vue')
+      }
     ]
   },
 
@@ -186,7 +236,11 @@ const routes = [
     component: AppLayout,
     meta: { roles: [ROLE.TOURIST] },
     children: [
-      { path: '', name: 'WeatherRoad', component: () => import('@/views/shared/WeatherRoadView.vue') }
+      {
+        path: '',
+        name: 'WeatherRoad',
+        component: () => import('@/views/shared/WeatherRoadView.vue')
+      }
     ]
   },
 
@@ -196,7 +250,11 @@ const routes = [
     component: AppLayout,
     meta: { roles: [ROLE.PLATFORM_ADMIN] },
     children: [
-      { path: '', name: 'Dashboard', component: () => import('@/views/platform_admin/DashboardView.vue') }
+      {
+        path: '',
+        name: 'Dashboard',
+        component: () => import('@/views/platform_admin/DashboardView.vue')
+      }
     ]
   },
   {
@@ -204,7 +262,11 @@ const routes = [
     component: AppLayout,
     meta: { roles: [ROLE.PLATFORM_ADMIN] },
     children: [
-      { path: '', name: 'HotelMarketing', component: () => import('@/views/platform_admin/HotelMarketingView.vue') }
+      {
+        path: '',
+        name: 'HotelMarketing',
+        component: () => import('@/views/platform_admin/HotelMarketingView.vue')
+      }
     ]
   },
 
@@ -212,7 +274,11 @@ const routes = [
     path: '/profile',
     component: AppLayout,
     children: [
-      { path: '', name: 'UserProfile', component: () => import('@/views/shared/UserProfileView.vue') }
+      {
+        path: '',
+        name: 'UserProfile',
+        component: () => import('@/views/shared/UserProfileView.vue')
+      }
     ]
   },
 
@@ -233,7 +299,11 @@ const routes = [
     path: '/notifications',
     component: AppLayout,
     children: [
-      { path: '', name: 'Notifications', component: () => import('@/views/shared/NotificationListView.vue') }
+      {
+        path: '',
+        name: 'Notifications',
+        component: () => import('@/views/shared/NotificationListView.vue')
+      }
     ]
   },
 

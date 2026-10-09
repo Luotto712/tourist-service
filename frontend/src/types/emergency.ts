@@ -11,9 +11,9 @@ export interface EmergencyInfo {
   id: number
   title: string
   content: string
-  validFrom: string        // 后端 LocalDate → JSON 里是 'YYYY-MM-DD' 字符串
+  validFrom: string // 后端 LocalDate → JSON 里是 'YYYY-MM-DD' 字符串
   validTo: string
-  status: EmergencyStatus  // ← 精确到三个值
+  status: EmergencyStatus // ← 精确到三个值
   publisherId: number
   publishTime: string
   createTime: string

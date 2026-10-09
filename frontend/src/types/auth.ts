@@ -1,6 +1,6 @@
 // src/types/auth.ts
 
-import { Role } from "@/constants/roles"
+import { Role } from '@/constants/roles'
 
 /** 存在 sessionStorage 里的用户信息 */
 export interface User {

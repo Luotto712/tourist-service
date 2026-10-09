@@ -4,7 +4,7 @@ import type { UserProfileResponse } from '@/types/auth'
 
 /** 用户搜索参数 */
 export interface SearchUsersParams {
-  keyword?: string      // 都可以不传 —— 所以用 ?
+  keyword?: string // 都可以不传 —— 所以用 ?
   role?: string
   college?: string
   page?: number

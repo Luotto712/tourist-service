@@ -42,7 +42,7 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useAppStore } from '@/stores/app'
-import { ROLE,isRole } from '@/constants/roles'
+import { ROLE, isRole } from '@/constants/roles'
 import type { Role } from '@/constants/roles'
 
 const route = useRoute()
@@ -51,7 +51,7 @@ const appStore = useAppStore()
 
 /** 叶子菜单项：能点击跳转的 */
 interface MenuLeaf {
-  index: string          // 必填（el-menu-item 要求）
+  index: string // 必填（el-menu-item 要求）
   title: string
   icon: string
 }
@@ -60,7 +60,7 @@ interface MenuLeaf {
 interface MenuGroup {
   title: string
   icon: string
-  children: MenuLeaf[]   // ⚠️ 注意这里是 MenuLeaf，不是 MenuItem
+  children: MenuLeaf[] // ⚠️ 注意这里是 MenuLeaf，不是 MenuItem
 }
 
 type MenuItem = MenuLeaf | MenuGroup
@@ -123,9 +123,7 @@ const menuByRole: MenuMap = {
   [ROLE.COMPLAINT_HANDLER]: [
     { index: '/complaints/handler', title: '待处理投诉', icon: 'Document' }
   ],
-  [ROLE.HOTEL_ADMIN]: [
-    { index: '/hotel/rooms', title: '客房信息录入', icon: 'OfficeBuilding' }
-  ]
+  [ROLE.HOTEL_ADMIN]: [{ index: '/hotel/rooms', title: '客房信息录入', icon: 'OfficeBuilding' }]
 }
 
 const roleMenus = computed(() => {
@@ -133,7 +131,6 @@ const roleMenus = computed(() => {
   return isRole(r) ? menuByRole[r] : []
   //     ↑ 这里收窄了，所以 menuByRole[r] 合法   ↑ 不是合法角色 → 空菜单
 })
-
 
 const activeMenu = computed(() => route.meta.activeMenu || route.path)
 </script>

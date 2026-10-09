@@ -9,7 +9,12 @@
     </div>
 
     <div class="navbar-center">
-      <el-badge :value="notifyStore.unreadCount" :hidden="notifyStore.unreadCount === 0" :max="99" class="notification-bell">
+      <el-badge
+        :value="notifyStore.unreadCount"
+        :hidden="notifyStore.unreadCount === 0"
+        :max="99"
+        class="notification-bell"
+      >
         <el-icon :size="20" @click="goNotifications"><Bell /></el-icon>
       </el-badge>
     </div>
@@ -19,11 +24,7 @@
         <div class="user-info">
           <el-icon class="avatar-icon"><UserFilled /></el-icon>
           <span class="username">{{ userStore.realName || userStore.username }}</span>
-          <el-tag
-            size="small"
-            :type="roleTagType"
-            class="role-tag"
-          >
+          <el-tag size="small" :type="roleTagType" class="role-tag">
             {{ roleLabel }}
           </el-tag>
           <el-icon class="arrow-icon"><ArrowDown /></el-icon>
@@ -82,7 +83,6 @@ const roleLabel = computed(() => roleLabelMap[userStore.role] || userStore.role 
 
 const roleTagType = computed(() => roleType[userStore.role] || 'info')
 
-
 function goNotifications() {
   router.push('/notifications')
 }
@@ -102,10 +102,12 @@ function handleCommand(command) {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: 'warning'
-    }).then(() => {
-      userStore.logout()
-      router.push('/login')
-    }).catch(() => {})
+    })
+      .then(() => {
+        userStore.logout()
+        router.push('/login')
+      })
+      .catch(() => {})
   } else if (command === 'changePassword') {
     router.push('/change-password')
   } else if (command === 'profile') {
@@ -174,7 +176,10 @@ function handleCommand(command) {
       padding: 6px;
       border-radius: 50%;
       transition: all 0.2s;
-      &:hover { color: #409eff; background: #ecf5ff; }
+      &:hover {
+        color: #409eff;
+        background: #ecf5ff;
+      }
     }
   }
 

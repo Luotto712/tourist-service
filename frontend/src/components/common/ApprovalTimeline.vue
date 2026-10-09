@@ -15,11 +15,7 @@
         <div class="timeline-card">
           <div class="card-header">
             <span class="node-name">{{ record.nodeName || '审批节点' }}</span>
-            <el-tag
-              :type="getActionType(record.action)"
-              size="small"
-              effect="dark"
-            >
+            <el-tag :type="getActionType(record.action)" size="small" effect="dark">
               {{ getActionText(record.action) }}
             </el-tag>
           </div>

@@ -7,15 +7,39 @@
       </el-table-column>
       <el-table-column prop="userName" label="投诉人" width="120" />
       <el-table-column label="投诉" width="90">
-        <template #default="{ row }"><el-button size="small" type="primary" link @click="$router.push(`/complaints/${row.id}`)">详情</el-button></template>
+        <template #default="{ row }"
+          ><el-button
+            size="small"
+            type="primary"
+            link
+            @click="$router.push(`/complaints/${row.id}`)"
+            >详情</el-button
+          ></template
+        >
       </el-table-column>
       <el-table-column prop="createTime" label="提交时间" width="180" />
       <el-table-column label="分派处理人员" width="220" fixed="right">
         <template #default="{ row }">
-          <el-select v-model="eachHandler[row.id]" placeholder="选择处理人员" size="small" style="width: 150px">
-            <el-option v-for="u in handlers" :key="u.id" :label="u.realName || u.username" :value="u.id" />
+          <el-select
+            v-model="eachHandler[row.id]"
+            placeholder="选择处理人员"
+            size="small"
+            style="width: 150px"
+          >
+            <el-option
+              v-for="u in handlers"
+              :key="u.id"
+              :label="u.realName || u.username"
+              :value="u.id"
+            />
           </el-select>
-          <el-button size="small" type="primary" :loading="acting === row.id" @click="handleAssign(row)">分派</el-button>
+          <el-button
+            size="small"
+            type="primary"
+            :loading="acting === row.id"
+            @click="handleAssign(row)"
+            >分派</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -55,7 +79,10 @@ async function fetchList() {
 
 async function handleAssign(row) {
   const handlerId = eachHandler[row.id]
-  if (!handlerId) { ElMessage.warning('请选择处理人员'); return }
+  if (!handlerId) {
+    ElMessage.warning('请选择处理人员')
+    return
+  }
   acting.value = row.id
   try {
     await assignComplaint(row.id, { handlerId })

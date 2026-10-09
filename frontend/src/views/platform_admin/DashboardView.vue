@@ -40,10 +40,19 @@ const cards = [
 ]
 
 const statusLabel: Record<string, string> = {
-  PENDING: '待审批', APPROVED: '已通过', REJECTED: '未通过', PROCESSING: '处理中',
-  RESOLVED: '处理完成', CONFIRMED: '已确认', CLOSED: '已结案'
+  PENDING: '待审批',
+  APPROVED: '已通过',
+  REJECTED: '未通过',
+  PROCESSING: '处理中',
+  RESOLVED: '处理完成',
+  CONFIRMED: '已确认',
+  CLOSED: '已结案'
 }
-const eStatusLabel: Record<string, string> = { PENDING: '待审批', APPROVED: '已发布', REJECTED: '已驳回' }
+const eStatusLabel: Record<string, string> = {
+  PENDING: '待审批',
+  APPROVED: '已发布',
+  REJECTED: '已驳回'
+}
 
 const pieRef = ref(null)
 const barRef = ref(null)
@@ -69,7 +78,11 @@ function onResize() {
 async function fetchData() {
   loading.value = true
   try {
-    const [ov, cs, es] = await Promise.all([getOverview(), getComplaintStatus(), getEmergencyStatus()])
+    const [ov, cs, es] = await Promise.all([
+      getOverview(),
+      getComplaintStatus(),
+      getEmergencyStatus()
+    ])
     Object.assign(data, ov.data || {})
     await nextTick()
     const echarts = await import('echarts')
@@ -79,11 +92,16 @@ async function fetchData() {
       title: { text: '投诉状态分布', left: 'center' },
       tooltip: { trigger: 'item' },
       legend: { bottom: 0 },
-      series: [{
-        type: 'pie',
-        radius: ['40%', '68%'],
-        data: Object.entries(cs.data || {}).map(([k, v]) => ({ name: statusLabel[k] || k, value: v }))
-      }]
+      series: [
+        {
+          type: 'pie',
+          radius: ['40%', '68%'],
+          data: Object.entries(cs.data || {}).map(([k, v]) => ({
+            name: statusLabel[k] || k,
+            value: v
+          }))
+        }
+      ]
     })
 
     barChart = echarts.init(barRef.value)
@@ -101,8 +119,20 @@ async function fetchData() {
 </script>
 
 <style lang="scss" scoped>
-.stat-card { margin-bottom: 4px; text-align: center; }
-.stat-label { color: #909399; font-size: 14px; }
-.stat-value { font-size: 30px; font-weight: 700; margin-top: 8px; }
-.chart { height: 320px; }
+.stat-card {
+  margin-bottom: 4px;
+  text-align: center;
+}
+.stat-label {
+  color: #909399;
+  font-size: 14px;
+}
+.stat-value {
+  font-size: 30px;
+  font-weight: 700;
+  margin-top: 8px;
+}
+.chart {
+  height: 320px;
+}
 </style>

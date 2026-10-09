@@ -26,7 +26,12 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog v-model="dialogVisible" :title="editing ? '编辑酒店营销' : '录入酒店营销'" width="520px" :close-on-click-modal="false">
+    <el-dialog
+      v-model="dialogVisible"
+      :title="editing ? '编辑酒店营销' : '录入酒店营销'"
+      width="520px"
+      :close-on-click-modal="false"
+    >
       <el-form :model="form" label-width="90px">
         <el-form-item label="酒店类型">
           <el-select v-model="form.hotelType" @change="onTypeChange">
@@ -39,7 +44,9 @@
             <el-option v-for="h in hotelOptions" :key="h.id" :label="h.name" :value="h.id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="营销内容"><el-input v-model="form.content" type="textarea" :rows="3" /></el-form-item>
+        <el-form-item label="营销内容"
+          ><el-input v-model="form.content" type="textarea" :rows="3"
+        /></el-form-item>
       </el-form>
       <template #footer>
         <el-button @click="dialogVisible = false">取消</el-button>
@@ -52,7 +59,12 @@
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { listMarketing, createMarketing, updateMarketing, deleteMarketing } from '@/api/hotelMarketing'
+import {
+  listMarketing,
+  createMarketing,
+  updateMarketing,
+  deleteMarketing
+} from '@/api/hotelMarketing'
 import { listCatalog } from '@/api/catalog'
 
 const list = ref([])
@@ -63,7 +75,9 @@ const editing = ref(null)
 const hotels = ref([])
 const form = reactive({ hotelType: 'STAR', hotelId: null, content: '' })
 
-const hotelOptions = computed(() => hotels.value.filter(h => (form.hotelType === 'STAR' ? h._isStar : !h._isStar)))
+const hotelOptions = computed(() =>
+  hotels.value.filter(h => (form.hotelType === 'STAR' ? h._isStar : !h._isStar))
+)
 
 onMounted(fetchList)
 
@@ -85,7 +99,9 @@ async function fetchList() {
   ]
 }
 
-function onTypeChange() { form.hotelId = null }
+function onTypeChange() {
+  form.hotelId = null
+}
 function hotelName(row) {
   const h = hotels.value.find(x => x.id === row.hotelId)
   return h ? h.name : `#${row.hotelId}`
@@ -100,8 +116,14 @@ function openDialog(row) {
 }
 
 async function handleSubmit() {
-  if (!form.hotelId) { ElMessage.warning('请选择酒店'); return }
-  if (!form.content) { ElMessage.warning('请填写营销内容'); return }
+  if (!form.hotelId) {
+    ElMessage.warning('请选择酒店')
+    return
+  }
+  if (!form.content) {
+    ElMessage.warning('请填写营销内容')
+    return
+  }
   submitting.value = true
   try {
     const payload = { hotelId: form.hotelId, hotelType: form.hotelType, content: form.content }
@@ -124,5 +146,9 @@ async function handleDelete(row) {
 </script>
 
 <style lang="scss" scoped>
-.header-bar { display: flex; justify-content: space-between; align-items: center; }
+.header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 </style>
