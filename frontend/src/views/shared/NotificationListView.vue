@@ -78,17 +78,28 @@ async function fetchData() {
 
 async function handleRead(item) {
   if (!item.isRead) {
-    try { await markAsRead(item.id); item.isRead = 1; notifyStore.refresh() } catch {}
+    try { 
+      await markAsRead(item.id); item.isRead = 1; notifyStore.refresh() 
+    } catch {
+      // 订阅失败不影响页面主流程，忽略}
+    }
   }
 }
-
 async function handleMarkAll() {
-  try { await markAllAsRead(); notifications.value.forEach(n => n.isRead = 1); notifyStore.clear(); ElMessage.success('全部已读') } catch {}
+  try { 
+    await markAllAsRead(); notifications.value.forEach(n => n.isRead = 1); notifyStore.clear(); ElMessage.success('全部已读') 
+  } catch {
+    // 订阅失败不影响页面主流程，忽略
+  }
 }
 
 async function handleDelete(item, index) {
   try { await ElMessageBox.confirm('确定删除这条消息？', '提示', { type: 'warning' }) } catch { return }
-  try { await deleteNotification(item.id); notifications.value.splice(index, 1); notifyStore.refresh(); ElMessage.success('已删除') } catch {}
+  try { 
+    await deleteNotification(item.id); notifications.value.splice(index, 1); notifyStore.refresh(); ElMessage.success('已删除') 
+  } catch {
+    // 订阅失败不影响页面主流程，忽略
+  }
 }
 
 onMounted(fetchData)

@@ -39,7 +39,6 @@
 </template>
 
 <script setup>
-import { ElMessage } from 'element-plus'
 import { getToken } from '@/utils/auth'
 import {
   Document,
@@ -49,7 +48,7 @@ import {
   Delete
 } from '@element-plus/icons-vue'
 
-const props = defineProps({
+defineProps({
   files: {
     type: Array,
     default: () => []
@@ -78,11 +77,6 @@ function formatTime(time) {
   const h = String(date.getHours()).padStart(2, '0')
   const m = String(date.getMinutes()).padStart(2, '0')
   return `${Y}-${M}-${D} ${h}:${m}`
-}
-
-function getFileExt(fileName) {
-  if (!fileName) return ''
-  return fileName.split('.').pop()?.toLowerCase() || ''
 }
 
 function getFileColor(ext) {

@@ -91,10 +91,10 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { Plus, Document, VideoCamera } from '@element-plus/icons-vue'
+import { Plus, Document } from '@element-plus/icons-vue'
 import { getComplaint, replyComplaint, confirmComplaint, rateComplaint } from '@/api/complaint'
 import { uploadFile } from '@/api/file'
 import { useUserStore } from '@/stores/user'

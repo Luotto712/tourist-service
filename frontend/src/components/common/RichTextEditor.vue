@@ -61,7 +61,7 @@
 
 <script setup>
 import { ref, watch, onMounted } from 'vue'
-import { ArrowDown, Link, Upload, List } from '@element-plus/icons-vue'
+import { ArrowDown, Upload, List } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import request from '@/utils/request'
 
