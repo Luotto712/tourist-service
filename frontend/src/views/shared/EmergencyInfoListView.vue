@@ -17,7 +17,7 @@
     <el-dialog v-model="detailVisible" title="应急信息详情" width="520px">
       <template v-if="current">
         <h3>{{ current.title }}</h3>
-        <p style="color:#909399">有效期：{{ current.validFrom }} ~ {{ current.validTo }}</p>
+        <p style="color: #909399">有效期：{{ current.validFrom }} ~ {{ current.validTo }}</p>
         <p>{{ current.content }}</p>
       </template>
     </el-dialog>

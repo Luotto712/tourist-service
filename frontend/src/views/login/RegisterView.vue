@@ -9,29 +9,70 @@
         <h1 class="login-title">武侯祠游客服务中心</h1>
       </div>
 
-      <el-form ref="formRef" :model="form" class="login-form" size="large" @submit.prevent="handleRegister">
+      <el-form
+        ref="formRef"
+        :model="form"
+        class="login-form"
+        size="large"
+        @submit.prevent="handleRegister"
+      >
         <el-form-item prop="username">
-          <el-input v-model="form.username" placeholder="请输入用户名" :prefix-icon="User" clearable />
+          <el-input
+            v-model="form.username"
+            placeholder="请输入用户名"
+            :prefix-icon="User"
+            clearable
+          />
         </el-form-item>
 
         <el-form-item prop="phone">
-          <el-input v-model="form.phone" placeholder="请输入手机号" :prefix-icon="Iphone" clearable />
+          <el-input
+            v-model="form.phone"
+            placeholder="请输入手机号"
+            :prefix-icon="Iphone"
+            clearable
+          />
         </el-form-item>
 
         <el-form-item prop="email">
-          <el-input v-model="form.email" placeholder="请输入邮箱" :prefix-icon="Message" clearable />
+          <el-input
+            v-model="form.email"
+            placeholder="请输入邮箱"
+            :prefix-icon="Message"
+            clearable
+          />
         </el-form-item>
 
         <el-form-item prop="password">
-          <el-input v-model="form.password" type="password" placeholder="请输入密码" :prefix-icon="Lock" show-password clearable />
+          <el-input
+            v-model="form.password"
+            type="password"
+            placeholder="请输入密码"
+            :prefix-icon="Lock"
+            show-password
+            clearable
+          />
         </el-form-item>
 
         <el-form-item prop="confirmPassword" :error="confirmError">
-          <el-input v-model="form.confirmPassword" type="password" placeholder="请再次输入密码" :prefix-icon="Lock" show-password clearable />
+          <el-input
+            v-model="form.confirmPassword"
+            type="password"
+            placeholder="请再次输入密码"
+            :prefix-icon="Lock"
+            show-password
+            clearable
+          />
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" class="login-btn" :loading="loading" :disabled="!canSubmit" @click="handleRegister">
+          <el-button
+            type="primary"
+            class="login-btn"
+            :loading="loading"
+            :disabled="!canSubmit"
+            @click="handleRegister"
+          >
             点击注册
           </el-button>
         </el-form-item>
@@ -72,15 +113,26 @@ const confirmError = computed(() => {
 })
 
 // 仅当全部填写且两次密码一致时，才可点击「点击注册」
-const canSubmit = computed(() =>
-  !!form.username && !!form.phone && !!form.email && !!form.password &&
-  !!form.confirmPassword && form.password === form.confirmPassword
+const canSubmit = computed(
+  () =>
+    !!form.username &&
+    !!form.phone &&
+    !!form.email &&
+    !!form.password &&
+    !!form.confirmPassword &&
+    form.password === form.confirmPassword
 )
 
 async function handleRegister() {
   if (!canSubmit.value) return
-  if (!/^1[3-9]\d{9}$/.test(form.phone)) { ElMessage.warning('请输入正确的手机号'); return }
-  if (!/^\S+@\S+\.\S+$/.test(form.email)) { ElMessage.warning('请输入正确的邮箱'); return }
+  if (!/^1[3-9]\d{9}$/.test(form.phone)) {
+    ElMessage.warning('请输入正确的手机号')
+    return
+  }
+  if (!/^\S+@\S+\.\S+$/.test(form.email)) {
+    ElMessage.warning('请输入正确的邮箱')
+    return
+  }
   loading.value = true
   try {
     await register({
@@ -122,8 +174,8 @@ async function handleRegister() {
   opacity: 0.38;
   pointer-events: none;
   mix-blend-mode: overlay;
-  mask-image: linear-gradient(to left, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
-  -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
+  mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 100%);
+  -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 100%);
 }
 
 .login-card {

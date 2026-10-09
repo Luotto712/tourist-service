@@ -7,13 +7,27 @@
       </el-table-column>
       <el-table-column prop="userName" label="投诉人" width="120" />
       <el-table-column label="投诉" width="90">
-        <template #default="{ row }"><el-button size="small" type="primary" link @click="$router.push(`/complaints/${row.id}`)">详情</el-button></template>
+        <template #default="{ row }"
+          ><el-button
+            size="small"
+            type="primary"
+            link
+            @click="$router.push(`/complaints/${row.id}`)"
+            >详情</el-button
+          ></template
+        >
       </el-table-column>
       <el-table-column prop="result" label="处理结果" show-overflow-tooltip min-width="200" />
       <el-table-column prop="handlerName" label="处理人员" width="120" />
       <el-table-column label="操作" width="110" fixed="right">
         <template #default="{ row }">
-          <el-button size="small" type="primary" :loading="acting === row.id" @click="handleClose(row)">结案</el-button>
+          <el-button
+            size="small"
+            type="primary"
+            :loading="acting === row.id"
+            @click="handleClose(row)"
+            >结案</el-button
+          >
         </template>
       </el-table-column>
     </el-table>

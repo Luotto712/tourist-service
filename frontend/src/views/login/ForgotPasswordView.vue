@@ -11,11 +11,21 @@
 
       <el-form ref="formRef" :model="form" :rules="rules" size="large" class="forgot-form">
         <el-form-item prop="username">
-          <el-input v-model="form.username" placeholder="请输入用户名" :prefix-icon="User" clearable />
+          <el-input
+            v-model="form.username"
+            placeholder="请输入用户名"
+            :prefix-icon="User"
+            clearable
+          />
         </el-form-item>
 
         <el-form-item prop="email">
-          <el-input v-model="form.email" placeholder="请输入注册邮箱" :prefix-icon="Message" clearable />
+          <el-input
+            v-model="form.email"
+            placeholder="请输入注册邮箱"
+            :prefix-icon="Message"
+            clearable
+          />
         </el-form-item>
 
         <el-form-item>
@@ -76,7 +86,9 @@ async function handleSubmit() {
 <style lang="scss" scoped>
 .forgot-password-container {
   min-height: 100vh;
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: linear-gradient(135deg, #57181b 0%, #701e22 30%, #96282c 70%, #bb4a4e 100%);
   padding: 20px;
   position: relative;
@@ -84,29 +96,67 @@ async function handleSubmit() {
 
   .login-right-bg {
     position: absolute;
-    right: 0; top: 0; bottom: 0; width: 50%;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 50%;
     background: url('/left_img.jpg') center/cover no-repeat;
     opacity: 0.38;
     pointer-events: none;
     mix-blend-mode: overlay;
-    mask-image: linear-gradient(to left, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
-    -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
+    mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 100%);
+    -webkit-mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 100%);
   }
 }
 .forgot-password-card {
-  width: 420px; max-width: 100%; background: #fff; border-radius: 12px; padding: 48px 40px;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.15);
-  position: relative; z-index: 1;
+  width: 420px;
+  max-width: 100%;
+  background: #fff;
+  border-radius: 12px;
+  padding: 48px 40px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
+  position: relative;
+  z-index: 1;
   transform: translateX(-260px);
-  .card-header { text-align: center; margin-bottom: 20px;
-    .header-icon { font-size: 48px; color: #409eff; }
-    h1 { font-size: 22px; font-weight: 700; color: #1e3c72; margin-top: 12px; }
+  .card-header {
+    text-align: center;
+    margin-bottom: 20px;
+    .header-icon {
+      font-size: 48px;
+      color: #409eff;
+    }
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1e3c72;
+      margin-top: 12px;
+    }
   }
-  .card-desc { color: #909399; font-size: 14px; text-align: center; margin-bottom: 28px; line-height: 1.6; }
-  .forgot-form .submit-btn { width: 100%; height: 44px; font-size: 16px; }
-  .back-link { text-align: center; margin-top: 20px;
-    a { display: inline-flex; align-items: center; gap: 4px; color: #606266; font-size: 14px; text-decoration: none;
-      &:hover { color: #409eff; }
+  .card-desc {
+    color: #909399;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+  .forgot-form .submit-btn {
+    width: 100%;
+    height: 44px;
+    font-size: 16px;
+  }
+  .back-link {
+    text-align: center;
+    margin-top: 20px;
+    a {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: #606266;
+      font-size: 14px;
+      text-decoration: none;
+      &:hover {
+        color: #409eff;
+      }
     }
   }
 }

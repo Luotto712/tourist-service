@@ -22,13 +22,7 @@
             <el-icon><Download /></el-icon>
             下载
           </el-button>
-          <el-button
-            v-if="showDelete"
-            size="small"
-            text
-            type="danger"
-            @click="handleDelete(file)"
-          >
+          <el-button v-if="showDelete" size="small" text type="danger" @click="handleDelete(file)">
             <el-icon><Delete /></el-icon>
             删除
           </el-button>

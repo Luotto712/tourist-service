@@ -3,11 +3,21 @@
     <template #header><span>待处理投诉</span></template>
     <el-table :data="list" v-loading="loading" border>
       <el-table-column label="编号" width="80">
-        <template #default="{ $index }">{{ (pagination.page - 1) * pagination.size + $index + 1 }}</template>
+        <template #default="{ $index }">{{
+          (pagination.page - 1) * pagination.size + $index + 1
+        }}</template>
       </el-table-column>
       <el-table-column prop="userName" label="投诉人" width="120" />
       <el-table-column label="投诉" width="90">
-        <template #default="{ row }"><el-button size="small" type="primary" link @click="$router.push(`/complaints/${row.id}`)">详情</el-button></template>
+        <template #default="{ row }"
+          ><el-button
+            size="small"
+            type="primary"
+            link
+            @click="$router.push(`/complaints/${row.id}`)"
+            >详情</el-button
+          ></template
+        >
       </el-table-column>
       <el-table-column prop="assignTime" label="分派时间" width="180" />
       <el-table-column label="操作" width="110" fixed="right">
@@ -108,7 +118,10 @@ function onProcessFileRemove(file, files) {
 }
 
 async function handleSubmit() {
-  if (!result.value.trim()) { ElMessage.warning('请填写处理结果'); return }
+  if (!result.value.trim()) {
+    ElMessage.warning('请填写处理结果')
+    return
+  }
   acting.value = true
   try {
     const res = await processComplaint(current.value.id, { result: result.value })

@@ -3,7 +3,14 @@
     <el-card class="card-shadow">
       <template #header><h2>个人信息</h2></template>
 
-      <el-form ref="formRef" :model="form" :rules="rules" label-width="120px" class="profile-form" v-loading="loading">
+      <el-form
+        ref="formRef"
+        :model="form"
+        :rules="rules"
+        label-width="120px"
+        class="profile-form"
+        v-loading="loading"
+      >
         <el-form-item label="用户名">
           <el-input :model-value="userStore.username" disabled />
         </el-form-item>
@@ -69,7 +76,9 @@ async function fetchProfile() {
     form.teacherNo = data.teacherNo || ''
     form.gpa = data.gpa || null
     form.gradeScore = data.gradeScore || null
-  } catch { /* handled */ } finally {
+  } catch {
+    /* handled */
+  } finally {
     loading.value = false
   }
 }
@@ -84,7 +93,9 @@ async function handleSubmit() {
     await updateProfile({ ...form })
     ElMessage.success('个人信息更新成功')
     await userStore.fetchProfile()
-  } catch { /* handled */ } finally {
+  } catch {
+    /* handled */
+  } finally {
     submitting.value = false
   }
 }
@@ -95,6 +106,8 @@ onMounted(() => fetchProfile())
 <style lang="scss" scoped>
 .profile-page {
   max-width: 600px;
-  .profile-form { max-width: 480px; }
+  .profile-form {
+    max-width: 480px;
+  }
 }
 </style>

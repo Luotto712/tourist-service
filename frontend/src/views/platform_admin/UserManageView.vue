@@ -7,7 +7,12 @@
 
       <el-form :model="searchForm" inline class="mb-20">
         <el-form-item label="关键词">
-          <el-input v-model="searchForm.keyword" placeholder="用户名/姓名" clearable style="width: 180px" />
+          <el-input
+            v-model="searchForm.keyword"
+            placeholder="用户名/姓名"
+            clearable
+            style="width: 180px"
+          />
         </el-form-item>
         <el-form-item label="角色">
           <el-select v-model="searchForm.role" placeholder="全部" clearable style="width: 160px">
@@ -26,14 +31,19 @@
         <el-table-column prop="realName" label="姓名" width="100" />
         <el-table-column label="角色" width="120" align="center">
           <template #default="{ row }: { row: UserProfileResponse }">
-            <el-tag size="small" :type="roleType[row.role] || 'info'">{{ roleLabel[row.role] || row.role }}</el-tag>
+            <el-tag size="small" :type="roleType[row.role] || 'info'">{{
+              roleLabel[row.role] || row.role
+            }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="phone" label="手机号" width="130" />
         <el-table-column prop="email" label="邮箱" min-width="180" />
         <el-table-column label="状态" width="90" align="center">
           <template #default="{ row }: { row: UserProfileResponse }">
-            <el-switch :model-value="row.status === 1" @change="(val: boolean | string | number) => handleToggleStatus(row, val)" />
+            <el-switch
+              :model-value="row.status === 1"
+              @change="(val: boolean | string | number) => handleToggleStatus(row, val)"
+            />
           </template>
         </el-table-column>
       </el-table>
@@ -93,10 +103,15 @@ async function handleToggleStatus(row: UserProfileResponse, val: boolean | strin
     await request.put(`/users/${row.id}/status`, { status: val ? 1 : 0 })
     ElMessage.success(val ? '已启用' : '已禁用')
     row.status = val ? 1 : 0
-  } catch { /* handled */ }
+  } catch {
+    /* handled */
+  }
 }
 
-function handleSearch() { pagination.page = 1; fetchUsers() }
+function handleSearch() {
+  pagination.page = 1
+  fetchUsers()
+}
 function handleReset() {
   searchForm.keyword = ''
   searchForm.role = ''
@@ -109,6 +124,9 @@ onMounted(() => fetchUsers())
 
 <style lang="scss" scoped>
 .user-manage-page {
-  .pagination-wrapper { display: flex; justify-content: center; }
+  .pagination-wrapper {
+    display: flex;
+    justify-content: center;
+  }
 }
 </style>

@@ -8,7 +8,14 @@
     </template>
 
     <el-table :data="list" v-loading="loading" border>
-      <el-table-column v-for="c in config.columns" :key="c.prop" :prop="c.prop" :label="c.label" show-overflow-tooltip min-width="120" />
+      <el-table-column
+        v-for="c in config.columns"
+        :key="c.prop"
+        :prop="c.prop"
+        :label="c.label"
+        show-overflow-tooltip
+        min-width="120"
+      />
       <el-table-column label="操作" width="130" fixed="right">
         <template #default="{ row }">
           <el-button size="small" link type="primary" @click="openDialog(row)">编辑</el-button>
@@ -27,7 +34,12 @@
       @current-change="fetchList"
     />
 
-    <el-dialog v-model="dialogVisible" :title="editing ? `编辑${config.title}` : `新增${config.title}`" width="560px" :close-on-click-modal="false">
+    <el-dialog
+      v-model="dialogVisible"
+      :title="editing ? `编辑${config.title}` : `新增${config.title}`"
+      width="560px"
+      :close-on-click-modal="false"
+    >
       <el-form :model="form" label-width="100px">
         <el-form-item v-for="c in config.columns" :key="c.prop" :label="c.label">
           <el-input v-if="c.prop === 'intro'" v-model="form[c.prop]" type="textarea" :rows="3" />
@@ -51,7 +63,10 @@ import { catalogs } from '@/constants/catalogs'
 
 const props = defineProps({ resource: { type: String, default: '' } })
 const route = useRoute()
-const config = computed(() => catalogs[props.resource || route.params.resource] || { title: '', resource: '', columns: [] })
+const config = computed(
+  () =>
+    catalogs[props.resource || route.params.resource] || { title: '', resource: '', columns: [] }
+)
 
 const list = ref([])
 const loading = ref(false)
@@ -63,21 +78,26 @@ const editing = ref(null)
 const form = reactive({})
 
 onMounted(fetchList)
-watch(() => config.value.resource, (nv, ov) => {
-  if (nv && nv !== ov) {
-    list.value = []
-    pagination.page = 1
-    dialogVisible.value = false
-    editing.value = null
-    fetchList()
+watch(
+  () => config.value.resource,
+  (nv, ov) => {
+    if (nv && nv !== ov) {
+      list.value = []
+      pagination.page = 1
+      dialogVisible.value = false
+      editing.value = null
+      fetchList()
+    }
   }
-})
-
+)
 
 async function fetchList() {
   loading.value = true
   try {
-    const res = await listCatalog(config.value.resource, { page: pagination.page, pageSize: pagination.size })
+    const res = await listCatalog(config.value.resource, {
+      page: pagination.page,
+      pageSize: pagination.size
+    })
     const data = res.data || {}
     list.value = data.list || []
     pagination.total = data.total || 0
@@ -88,7 +108,9 @@ async function fetchList() {
 
 function openDialog(row) {
   editing.value = row || null
-  config.value.columns.forEach(c => { form[c.prop] = row ? row[c.prop] ?? '' : '' })
+  config.value.columns.forEach(c => {
+    form[c.prop] = row ? (row[c.prop] ?? '') : ''
+  })
   dialogVisible.value = true
 }
 
@@ -96,7 +118,9 @@ async function handleSubmit() {
   submitting.value = true
   try {
     const payload = {}
-    config.value.columns.forEach(c => { payload[c.prop] = form[c.prop] })
+    config.value.columns.forEach(c => {
+      payload[c.prop] = form[c.prop]
+    })
     if (editing.value) await updateCatalog(config.value.resource, editing.value.id, payload)
     else await createCatalog(config.value.resource, payload)
     ElMessage.success('保存成功')
@@ -116,5 +140,9 @@ async function handleDelete(row) {
 </script>
 
 <style lang="scss" scoped>
-.header-bar { display: flex; justify-content: space-between; align-items: center; }
+.header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 </style>

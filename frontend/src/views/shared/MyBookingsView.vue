@@ -4,7 +4,9 @@
 
     <el-table :data="list" v-loading="loading" border>
       <el-table-column label="编号" width="80">
-        <template #default="{ $index }">{{ (pagination.page - 1) * pagination.size + $index + 1 }}</template>
+        <template #default="{ $index }">{{
+          (pagination.page - 1) * pagination.size + $index + 1
+        }}</template>
       </el-table-column>
       <el-table-column prop="hotelName" label="酒店名称" min-width="160" />
       <el-table-column prop="roomType" label="房型" width="140" />
@@ -16,7 +18,9 @@
       </el-table-column>
       <el-table-column label="状态" width="100">
         <template #default="{ row }">
-          <el-tag :type="row.status === 'BOOKED' ? 'success' : 'info'">{{ row.status === 'BOOKED' ? '已预订' : '已取消' }}</el-tag>
+          <el-tag :type="row.status === 'BOOKED' ? 'success' : 'info'">{{
+            row.status === 'BOOKED' ? '已预订' : '已取消'
+          }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="100" fixed="right">
@@ -27,8 +31,9 @@
             type="danger"
             link
             @click="handleCancel(row)"
-          >取消</el-button>
-          <span v-else style="color:#c0c4cc">—</span>
+            >取消</el-button
+          >
+          <span v-else style="color: #c0c4cc">—</span>
         </template>
       </el-table-column>
     </el-table>

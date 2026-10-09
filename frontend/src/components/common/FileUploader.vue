@@ -12,9 +12,7 @@
       :before-upload="beforeUpload"
     >
       <el-icon class="upload-icon"><UploadFilled /></el-icon>
-      <div class="upload-text">
-        <em>点击上传</em> 或将文件拖拽到此处
-      </div>
+      <div class="upload-text"><em>点击上传</em> 或将文件拖拽到此处</div>
       <div class="upload-tip">
         支持 pdf、doc、docx、xls、xlsx、jpg、jpeg、png、mp4 格式，单个文件不超过 50MB
       </div>
@@ -42,19 +40,16 @@
       </div>
       <div v-for="file in fileList" :key="file.id" class="file-row">
         <div class="file-row-info">
-          <el-icon class="file-type-icon" :style="{ color: getFileColor(file.fileExt || file.fileName) }">
+          <el-icon
+            class="file-type-icon"
+            :style="{ color: getFileColor(file.fileExt || file.fileName) }"
+          >
             <Document />
           </el-icon>
           <span class="file-row-name">{{ file.fileName }}</span>
           <span class="file-row-size">{{ formatSize(file.fileSize) }}</span>
         </div>
-        <el-button
-          type="danger"
-          size="small"
-          text
-          :icon="Delete"
-          @click="handleDeleteFile(file)"
-        />
+        <el-button type="danger" size="small" text :icon="Delete" @click="handleDeleteFile(file)" />
       </div>
     </div>
   </div>
@@ -145,7 +140,7 @@ async function handleUpload(options) {
   try {
     const res = await request.post('/files/upload', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
-      onUploadProgress: (event) => {
+      onUploadProgress: event => {
         if (event.total) {
           item.progress = Math.round((event.loaded * 100) / event.total)
         }

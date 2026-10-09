@@ -96,8 +96,20 @@ const asideWidth = computed(() => {
         opacity: 0.15;
         pointer-events: none;
         z-index: 0;
-        mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 8%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 100%);
-        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 8%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 100%);
+        mask-image: linear-gradient(
+          to bottom,
+          transparent 0%,
+          rgba(0, 0, 0, 0.3) 8%,
+          rgba(0, 0, 0, 1) 20%,
+          rgba(0, 0, 0, 1) 100%
+        );
+        -webkit-mask-image: linear-gradient(
+          to bottom,
+          transparent 0%,
+          rgba(0, 0, 0, 0.3) 8%,
+          rgba(0, 0, 0, 1) 20%,
+          rgba(0, 0, 0, 1) 100%
+        );
       }
 
       :deep(> *) {
