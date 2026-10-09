@@ -24,12 +24,14 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, onMounted, onUnmounted, nextTick } from 'vue'
 import { getOverview, getComplaintStatus, getEmergencyStatus } from '@/api/statistics'
+import type { StatsMap } from '@/api/statistics'
+import type { ECharts } from 'echarts'
 
 const loading = ref(false)
-const data = reactive({})
+const data = reactive<StatsMap>({})
 const cards = [
   { key: 'totalComplaints', label: '投诉总数', color: '#409eff' },
   { key: 'pendingComplaints', label: '待审批投诉', color: '#e6a23c' },
@@ -37,16 +39,16 @@ const cards = [
   { key: 'closedComplaints', label: '已结案投诉', color: '#909399' }
 ]
 
-const statusLabel = {
+const statusLabel: Record<string, string> = {
   PENDING: '待审批', APPROVED: '已通过', REJECTED: '未通过', PROCESSING: '处理中',
   RESOLVED: '处理完成', CONFIRMED: '已确认', CLOSED: '已结案'
 }
-const eStatusLabel = { PENDING: '待审批', APPROVED: '已发布', REJECTED: '已驳回' }
+const eStatusLabel: Record<string, string> = { PENDING: '待审批', APPROVED: '已发布', REJECTED: '已驳回' }
 
 const pieRef = ref(null)
 const barRef = ref(null)
-let pieChart = null
-let barChart = null
+let pieChart: ECharts | null = null
+let barChart: ECharts | null = null
 
 onMounted(async () => {
   window.addEventListener('resize', onResize)
@@ -70,8 +72,7 @@ async function fetchData() {
     const [ov, cs, es] = await Promise.all([getOverview(), getComplaintStatus(), getEmergencyStatus()])
     Object.assign(data, ov.data || {})
     await nextTick()
-    const mod = await import('echarts')
-    const echarts = mod.default || mod
+    const echarts = await import('echarts')
 
     pieChart = echarts.init(pieRef.value)
     pieChart.setOption({
