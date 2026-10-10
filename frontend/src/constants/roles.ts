@@ -12,8 +12,10 @@ export const ROLE = {
 //          keyof typeof ROLE 拿到键的联合（'TOURIST' | 'PLATFORM_ADMIN' | ...）
 //          因为键名和值一样，所以直接用 keyof typeof ROLE 就行
 export type Role = keyof typeof ROLE
+export type TagType = 'primary' | 'success' | 'info' | 'warning' | 'danger'
+
 // 角色 -> 中文名
-export const roleLabel = {
+export const roleLabel: Record<string, string> = {
   TOURIST: '游客',
   PLATFORM_ADMIN: '平台管理员',
   APPROVER: '审批人员',
@@ -22,7 +24,8 @@ export const roleLabel = {
 }
 
 // 角色 -> el-tag 类型
-export const roleType = {
+
+export const roleType: Record<string, TagType> = {
   TOURIST: 'success',
   PLATFORM_ADMIN: 'danger',
   APPROVER: 'warning',

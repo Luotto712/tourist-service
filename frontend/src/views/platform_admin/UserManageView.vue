@@ -30,7 +30,7 @@
         <el-table-column prop="username" label="用户名" width="120" />
         <el-table-column prop="realName" label="姓名" width="100" />
         <el-table-column label="角色" width="120" align="center">
-          <template #default="{ row }: { row: UserProfileResponse }">
+          <template #default="{ row }">
             <el-tag size="small" :type="roleType[row.role] || 'info'">{{
               roleLabel[row.role] || row.role
             }}</el-tag>
@@ -39,10 +39,10 @@
         <el-table-column prop="phone" label="手机号" width="130" />
         <el-table-column prop="email" label="邮箱" min-width="180" />
         <el-table-column label="状态" width="90" align="center">
-          <template #default="{ row }: { row: UserProfileResponse }">
+          <template #default="{ row }">
             <el-switch
               :model-value="row.status === 1"
-              @change="(val: boolean | string | number) => handleToggleStatus(row, val)"
+              @change="(val: boolean | string | number) => handleToggleStatus(row as UserProfileResponse, val)"
             />
           </template>
         </el-table-column>

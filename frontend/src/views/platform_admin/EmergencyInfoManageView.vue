@@ -22,8 +22,8 @@
       </el-table-column>
       <el-table-column label="操作" width="160" fixed="right">
         <template #default="{ row }">
-          <el-button size="small" link type="primary" @click="openDialog(row)">编辑</el-button>
-          <el-button size="small" link type="danger" @click="handleDelete(row)">删除</el-button>
+          <el-button size="small" link type="primary" @click="openDialog(row as EmergencyInfo)">编辑</el-button>
+          <el-button size="small" link type="danger" @click="handleDelete(row as EmergencyInfo)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -116,12 +116,14 @@ const submitting = ref(false)
 const editing = ref<EmergencyInfo | null>(null)
 const form = reactive({ title: '', content: '', validFrom: '', validTo: '' })
 
+type TagType = 'primary' | 'success' | 'info' | 'warning' | 'danger'
+
 const statusLabelMap: Record<EmergencyStatus, string> = {
   PENDING: '待审批',
   APPROVED: '已发布',
   REJECTED: '已驳回'
 }
-const statusTypeMap: Record<EmergencyStatus, string> = {
+const statusTypeMap: Record<EmergencyStatus, TagType> = {
   PENDING: 'warning',
   APPROVED: 'success',
   REJECTED: 'danger'
@@ -130,7 +132,7 @@ function statusLabel(s: EmergencyStatus) {
   // 防御：后端若新增了第 4 种状态，这里兜底显示原值，而不是空白
   return statusLabelMap[s] || s
 }
-function statusType(s: EmergencyStatus) {
+function statusType(s: EmergencyStatus): TagType {
   return statusTypeMap[s] || 'info'
 }
 
