@@ -1,7 +1,7 @@
 import axios from 'axios'
 import type { AxiosError, AxiosRequestConfig } from 'axios'
 import { ElMessage } from 'element-plus'
-import { getToken, removeToken } from './auth'
+import { getToken, removeToken, removeUser } from './auth'
 import type { ApiResult } from '@/types/api'
 
 // 我们的响应拦截器已经把 response.data 解包了，
@@ -39,6 +39,19 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   response => {
+    const res = response.data as ApiResult
+
+    // 后端业务异常返回的是 HTTP 200 + body 里的 code，所以这里也要检查
+    if (res && typeof res.code === 'number' && res.code !== 200) {
+      // 业务层的"未登录/登录过期" —— 和 HTTP 401 同样处理
+      if (res.code === 401) {
+        removeToken()
+        removeUser()
+        window.location.href = '/login'
+        return Promise.reject(new Error(res.message || '登录已过期'))
+      }
+      // 其他业务码保持原样：由调用方自己判断（项目既有模式）
+    }
     return response.data
   },
   (error: AxiosError<ApiResult>) => {
@@ -46,6 +59,7 @@ instance.interceptors.response.use(
       const { status, data } = error.response
       if (status === 401) {
         removeToken()
+        removeUser()
         window.location.href = '/login'
         return Promise.reject(error)
       }
