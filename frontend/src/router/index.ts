@@ -75,7 +75,18 @@ const routes = [
     component: AppLayout,
     children: [{ path: '', name: 'Home', component: () => import('@/views/shared/HomeView.vue') }]
   },
-
+  //ai问询
+  {
+    path: '/ai-assistant',
+    component: AppLayout,
+    children: [
+      {
+        path: '',
+        name: 'AiAssistant',
+        component: () => import('@/views/shared/AiAssistantView.vue')
+      }
+    ]
+  },
   // 游客：我的投诉 + 应急信息
   {
     path: '/complaints',

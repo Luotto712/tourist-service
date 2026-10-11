@@ -126,9 +126,15 @@ const menuByRole: MenuMap = {
   [ROLE.HOTEL_ADMIN]: [{ index: '/hotel/rooms', title: '客房信息录入', icon: 'OfficeBuilding' }]
 }
 
+// 在 menuByRole 下面加
+/** 所有角色都能看到的菜单 */
+const commonMenus: MenuItem[] = [
+  { index: '/ai-assistant', title: 'AI 问询', icon: 'ChatDotRound' }
+]
+
 const roleMenus = computed(() => {
   const r = userStore.role
-  return isRole(r) ? menuByRole[r] : []
+  return isRole(r) ? [...menuByRole[r], ...commonMenus] : []
   //     ↑ 这里收窄了，所以 menuByRole[r] 合法   ↑ 不是合法角色 → 空菜单
 })
 
