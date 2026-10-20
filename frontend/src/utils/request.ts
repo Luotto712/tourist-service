@@ -24,6 +24,19 @@ const instance = axios.create({
   timeout: 15000
 })
 
+// 多个请求同时返回 401 时只处理一次：
+// 否则每个失败请求都会清一遍凭证、赋值一次 location.href。
+// 这里用整页跳转（location.href），页面重新加载后模块状态自然重置。
+let redirectingToLogin = false
+
+function redirectToLogin(): void {
+  if (redirectingToLogin) return
+  redirectingToLogin = true
+  removeToken()
+  removeUser()
+  window.location.href = '/login'
+}
+
 instance.interceptors.request.use(
   config => {
     const token = getToken()
@@ -45,9 +58,7 @@ instance.interceptors.response.use(
     if (res && typeof res.code === 'number' && res.code !== 200) {
       // 业务层的"未登录/登录过期" —— 和 HTTP 401 同样处理
       if (res.code === 401) {
-        removeToken()
-        removeUser()
-        window.location.href = '/login'
+        redirectToLogin()
         return Promise.reject(new Error(res.message || '登录已过期'))
       }
       // 其他业务码保持原样：由调用方自己判断（项目既有模式）
@@ -58,9 +69,7 @@ instance.interceptors.response.use(
     if (error.response) {
       const { status, data } = error.response
       if (status === 401) {
-        removeToken()
-        removeUser()
-        window.location.href = '/login'
+        redirectToLogin()
         return Promise.reject(error)
       }
       const message = data?.message || '请求失败，请稍后重试'
