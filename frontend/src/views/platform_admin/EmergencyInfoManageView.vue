@@ -191,10 +191,20 @@ async function handleSubmit() {
 }
 
 async function handleDelete(row: EmergencyInfo) {
-  await ElMessageBox.confirm('确定删除该应急信息吗？', '提示', { type: 'warning' })
-  await deleteEmergency(row.id)
-  ElMessage.success('删除成功')
-  fetchList()
+  try {
+    await ElMessageBox.confirm('确定删除该应急信息吗？', '提示', { type: 'warning' })
+  } catch {
+    // 用户点了取消/关闭，什么都不做
+    return
+  }
+
+  try {
+    await deleteEmergency(row.id)
+    ElMessage.success('删除成功')
+    fetchList()
+  } catch {
+    // 失败提示由响应拦截器统一处理，这里只负责中断后续流程
+  }
 }
 </script>
 
