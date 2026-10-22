@@ -68,7 +68,7 @@ instance.interceptors.response.use(
   (error: AxiosError<ApiResult>) => {
     if (error.response) {
       const { status, data } = error.response
-      if (status === 401) {
+      if (status === 401 || status === 403) {
         redirectToLogin()
         return Promise.reject(error)
       }
